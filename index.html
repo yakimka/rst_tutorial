@@ -3,18 +3,68 @@
   <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <title>🦜 Polyglot - Piratical PyScript</title>
+      <title>reStructuredText Live Editor</title>
       <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
       <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+      <style>
+        body {
+          font-family: sans-serif;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+        }
+        h1 {
+          text-align: center;
+          margin-top: 0.5em;
+          margin-bottom: 0.5em;
+        }
+        .container {
+          display: flex;
+          flex-grow: 1;
+          overflow: hidden; /* Prevents scrollbars on container if children manage their own */
+        }
+        .panel {
+          flex: 1;
+          padding: 10px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden; /* For internal scrolling */
+        }
+        .panel h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        #rst-input {
+          width: 100%;
+          flex-grow: 1; /* Takes available space in the panel */
+          box-sizing: border-box;
+          font-family: monospace;
+          font-size: 1em;
+          border: 1px solid #ccc;
+        }
+        #rst-output {
+          border: 1px solid #ccc;
+          flex-grow: 1; /* Takes available space in the panel */
+          overflow-y: auto; /* Scrollbar for content overflow */
+          padding: 5px;
+          box-sizing: border-box;
+        }
+      </style>
   </head>
     <body>
-
-      <h1>Polyglot 🦜 💬 🇬🇧 ➡️ 🏴‍☠️</h1>
-      <p>Translate English into Pirate speak...</p>
-      <input type="text" name="english" id="english" placeholder="Type English here..." />
-      <button py-click="translate_english">Translate</button>
-      <div id="output"></div>
+      <h1>reStructuredText Live Editor</h1>
+      <div class="container">
+        <div class="panel" id="rst-input-area">
+          <h2>Input (reStructuredText)</h2>
+          <textarea id="rst-input" py-input="render_rst_on_input" placeholder="Type reStructuredText here..."></textarea>
+        </div>
+        <div class="panel" id="rst-output-area">
+          <h2>Output (HTML)</h2>
+          <div id="rst-output"></div>
+        </div>
+      </div>
       <script type="py" src="./main.py" config="./pyscript.json"></script>
-
     </body>
 </html>
