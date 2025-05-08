@@ -3,48 +3,63 @@
 ..
    _Next: 1_2_basic_syntax
 
-.. default-role:: literal
-
 =====================================
 Lesson 1.1: What is reStructuredText?
 =====================================
 
-Welcome to the first lesson!
+Welcome to the interactive reStructuredText tutorial!
 
-reStructuredText (often abbreviated as RST, ReST, or reST) is a lightweight markup language designed to be both:
+reStructuredText (often abbreviated as RST, ReST, or reST) is a lightweight markup language.
+It's designed to be easy to read in its plain text form and can be converted into various other
+formats like HTML or PDF using tools like Docutils_.
 
-1.  **Readable by humans** in its raw, plain text form.
-2.  **Processable into various formats** (like HTML, PDF, etc.) by software, most notably the Docutils_ library.
+Think of it as a way to write structured documents (like articles, documentation, or even books)
+using simple text conventions that you can type in any basic text editor.
 
-Key Characteristics
--------------------
+Key Characteristics:
+--------------------
 
-*   **Plain Text**: You write reStructuredText in any plain text editor.
-*   **Simple Constructs**: It uses simple and intuitive patterns (like asterisks for emphasis,
-    or blank lines to separate paragraphs) to indicate the structure of a document.
-*   **Extensible**: While the core syntax is simple, reStructuredText can be extended with
-    "directives" to support more complex structures like tables, images, and code blocks.
-*   **Widely Used**: It's commonly used for technical documentation (including Python's official documentation),
-    README files, and anywhere structured plain text is needed.
+*   **Plain Text First**: The raw reStructuredText you write should be easily readable on its own.
+*   **Simple Syntax**: It uses straightforward patterns for common formatting needs.
+    For example, blank lines separate paragraphs, and asterisks are used for emphasis.
+*   **Extensible**: For more complex needs, reStructuredText uses "directives" – special
+    commands that can create things like tables, images, or specially formatted blocks of text.
+*   **Widely Used**: It's a popular choice for software documentation
+    (including Python's own documentation), project README files, and any situation where
+    you need to create well-structured documents from plain text.
 
-The Goal
---------
+The Goal of reStructuredText:
+-----------------------------
 
-The goal of reStructuredText is to provide a markup syntax that is easy to write and read without
-any special tools, yet powerful enough to create well-structured documents.
-The markup should be as unobtrusive as possible.
+The main idea behind reStructuredText is to offer a markup system that is:
 
-This tutorial will guide you through the various features of reStructuredText,
-starting with the basics.
+1.  **Unobtrusive**: The markup symbols should blend in with the text as much as possible.
+2.  **Intuitive**: The syntax should be easy to learn and remember.
+3.  **Powerful**: Capable of representing complex document structures.
+
+In this tutorial, we'll explore these features step by step.
 
 .. _Docutils: https://docutils.sourceforge.io/
 
+**Your Task:**
+
+Familiarize yourself with the example below. Try making small changes:
+
+1. Add a new paragraph.
+2. Try changing some text to be *emphasized* (italic) or **strongly emphasized** (bold).
+3. Add a new line of ``inline literal text``.
+   Observe how your changes are rendered in the HTML output panel.
+
 # -Example-
 This is a simple paragraph in reStructuredText.
+It's written in plain text.
 
-This is another paragraph. Notice the blank line separating them.
+This is another paragraph.
+Paragraphs are separated by one or more blank lines.
 
-You can use *emphasis* (italics) or **strong emphasis** (bold).
-You can also write ``inline literal text``, which is often used for code snippets.
+You can easily create *emphasized text* (usually shown as italics)
+or **strongly emphasized text** (usually shown as bold).
+For code snippets or to show text exactly as it is, you can use ``inline literal text``.
 
-You can play with this example and immediately see the results in the preview.
+Feel free to modify this example and see the results instantly!
+This interactive editor is here to help you learn.
