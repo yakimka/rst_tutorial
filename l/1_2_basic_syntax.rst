@@ -6,14 +6,12 @@
 ===================================================================
 Lesson 1.2: Basic Syntax - Paragraphs, Blank Lines, and Indentation
 ===================================================================
-
 In reStructuredText, the fundamental building blocks of a document are paragraphs.
 Understanding how they are formed and separated, along with the role of indentation,
 is key to creating well-structured documents.
 
 Paragraphs
 ----------
-
 A paragraph is a simple block of text. Paragraphs are separated from each other by one or more
 blank lines. The text within a paragraph should typically have the same level of indentation
 (usually, meaning it's not indented at all, or it's part of an indented block like a quote).
@@ -28,14 +26,12 @@ blank lines. The text within a paragraph should typically have the same level of
 
 Blank Lines
 -----------
-
 Blank lines are crucial in reStructuredText. They serve as the primary way to separate
 different elements, not just paragraphs. Using more than one blank line between
 elements has the same effect as using a single blank line.
 
 Indentation
 -----------
-
 Indentation is significant in reStructuredText. While many elements start at the
 left margin, indenting a block of text usually means something specific.
 One common use of indentation is to create a **block quote**.

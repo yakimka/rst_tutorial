@@ -9,14 +9,24 @@ Lesson X.Y: Lesson Title
 
 .. IMPORTANT::
    This file serves as a template for creating new lessons.
-   The content above the "# -Example-" separator will be displayed as the lesson description
+   The content above the "# Lesson Example" separator will be displayed as the lesson description
    and instructions in the left panel of the application.
-   The content below the "# -Example-" separator will be pre-loaded into the
+   The content below the "# Lesson Example" separator will be pre-loaded into the
    reStructuredText input area (middle-right panel) and rendered as HTML in the
    output area (bottom-right panel).
 
    When writing reStructuredText, please try to keep line lengths between 80 and 120 characters
    for better readability.
+
+   For inline code or literal text, use double backticks: ``text_goes_here``
+
+   * This is a bullet list.
+     Lists must be separated from surrounding text by blank lines (above and below).
+   * It has two items.
+
+   1. This is a numbered list.
+      It also needs blank lines around it.
+   2. It also has two items.
 
    Replace "Lesson X: Lesson Title" with the actual lesson number and title.
    Fill in the description and task for the student below.
@@ -39,6 +49,7 @@ bold/italic text, code blocks for syntax examples, etc.)
 .. code-block:: rst
 
    Example of how to show syntax if needed in the description:
+
    * This is a bullet list
    * It has two items
 
