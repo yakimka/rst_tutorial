@@ -136,23 +136,43 @@ async def load_exercise_from_url():
     params = js.URLSearchParams.new(js.window.location.search)
     exercise_id = params.get("id")
     exercise_div = document.querySelector("#exercise-content-area")
+    rst_input_element = document.querySelector("#rst-input")
+    rst_output_div = document.querySelector("#rst-output")
+
+    EXAMPLE_DELIMITER = "# -Example-"
 
     if exercise_id:
         file_path = f"/l/{exercise_id}.rst"
-        rst_content = await load_text_file(file_path)
+        full_rst_content = await load_text_file(file_path)
         
-        # Check if load_text_file returned an error message
-        if rst_content.startswith("Error:"):
-            html_content = f"<p style='color: red;'>{rst_content}</p>"
+        exercise_rst_part = ""
+        example_rst_part = ""
+
+        if full_rst_content.startswith("Error:"):
+            exercise_div.innerHTML = f"<p style='color: red;'>{full_rst_content}</p>"
+            rst_input_element.value = ""
+            rst_output_div.innerHTML = ""
         else:
-            # If content loaded successfully, render it as RST
-            html_content = render_rst(rst_content)
+            if EXAMPLE_DELIMITER in full_rst_content:
+                parts = full_rst_content.split(EXAMPLE_DELIMITER, 1)
+                exercise_rst_part = parts[0].strip()
+                if len(parts) > 1:
+                    example_rst_part = parts[1].strip()
+            else:
+                exercise_rst_part = full_rst_content.strip()
             
-        exercise_div.innerHTML = html_content
+            exercise_div.innerHTML = render_rst(exercise_rst_part)
+            rst_input_element.value = example_rst_part
+            # Calling render_rst_on_input will use the new value of rst_input_element
+            # to render the example in the rst_output_div.
+            render_rst_on_input() 
+            
     else:
-        # If no 'id' parameter, the default placeholder text in index.html will remain.
-        # Or a message could be set here:
-        # exercise_div.innerHTML = "<p>No exercise ID specified in the URL.</p>"
+        # If no 'id' parameter, the default placeholder text in index.html will remain for exercise.
+        # Clear input and output for example.
+        # exercise_div.innerHTML = "<p>No exercise ID specified in the URL.</p>" # Optional: message if no ID
+        rst_input_element.value = ""
+        rst_output_div.innerHTML = ""
         pass
 
 async def main_app_setup():

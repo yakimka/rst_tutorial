@@ -41,3 +41,5 @@ This is another paragraph. Notice the blank line separating them.
 
 You can use *emphasis* (italics) or **strong emphasis** (bold).
 You can also write ``inline literal text``, which is often used for code snippets.
+
+You can play with this example and immediately see the results in the preview.
