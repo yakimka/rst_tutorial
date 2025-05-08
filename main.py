@@ -11,38 +11,8 @@ def render_rst_on_input(event=None):
     input_element = document.querySelector("#rst-input")
     rst_text = input_element.value
     output_div = document.querySelector("#rst-output")
+    output_div.innerHTML = render_rst(rst_text)
 
-    if not rst_text.strip():
-        output_div.innerHTML = ""
-        return
-
-    # Configure docutils to report errors as text, not via stderr or exceptions
-    # for parsing issues.
-    error_stream = io.StringIO() # To catch any stray messages
-    settings_overrides = {
-        'warning_stream': error_stream,  # Redirects some messages
-        # 'report_level': 5,  # Report WARNING_LEVEL (1) and above
-        # 'halt_level': 5,  # Do not halt on any reported message (NONE_LEVEL is 5)
-        'traceback': True  # Do not include Python tracebacks in docutils messages
-    }
-
-    try:
-        # Ensure that publish_parts doesn't fail on completely empty or whitespace-only rst_text
-        # It should be handled by the initial check, but as a safeguard for direct calls:
-        if not rst_text.strip():
-            output_div.innerHTML = ""
-            return
-
-        parts = publish_parts(
-            source=rst_text,
-            writer_name='html5',
-            settings_overrides=settings_overrides
-        )
-        output_div.innerHTML = parts['html_body']
-    except Exception as e:
-        # Catching all exceptions might be too broad for docutils,
-        # but for now, this ensures some error message is shown.
-        output_div.innerHTML = f"<pre style='color: red;'>Error rendering reStructuredText:\n{str(e)}</pre>"
 
 def handle_keydown(event):
     """
@@ -117,3 +87,26 @@ def handle_keydown(event):
                 new_cursor_char_pos = 0
 
             target.selectionStart = target.selectionEnd = new_cursor_char_pos
+
+
+def render_rst(rst: str) -> str:
+    if not rst.strip():
+        return ""
+
+    error_stream = io.StringIO() # To catch any stray messages
+    settings_overrides = {
+        'warning_stream': error_stream,  # Redirects some messages
+        # 'report_level': 5,  # Report WARNING_LEVEL (1) and above
+        # 'halt_level': 5,  # Do not halt on any reported message (NONE_LEVEL is 5)
+        'traceback': True  # Do not include Python tracebacks in docutils messages
+    }
+    try:
+        parts = publish_parts(
+            source=rst,
+            writer_name='html5',
+            settings_overrides=settings_overrides
+        )
+    except Exception as e:
+        return f"<pre style='color: red;'>Error rendering reStructuredText:\n{str(e)}</pre>"
+
+    return parts['html_body']
