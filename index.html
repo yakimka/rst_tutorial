@@ -1,105 +1,121 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <title>reStructuredText Live Editor</title>
-      <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
-      <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
-      <style>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>reStructuredText Live Editor</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+    <style>
         body {
-          font-family: sans-serif;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          height: 100vh;
+            font-family: sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
+
         h1 {
-          text-align: center;
-          margin-top: 0.5em;
-          margin-bottom: 0.5em;
+            text-align: center;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
         }
+
         .container {
-          display: flex;
-          flex-grow: 1;
-          overflow: hidden; /* Prevents scrollbars on container if children manage their own */
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden; /* Prevents scrollbars on container if children manage their own */
         }
+
         .panel {
-          /* flex: 1; Removed, will be applied specifically to child panels for width/height distribution */
-          padding: 10px;
-          box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden; /* For internal scrolling, children will handle actual scroll */
+            /* flex: 1; Removed, will be applied specifically to child panels for width/height distribution */
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* For internal scrolling, children will handle actual scroll */
         }
+
         #exercise-panel {
-          flex: 1; /* Takes 1 part of width relative to .editor-column */
-          /* Inherits .panel styles for padding, display:flex, flex-direction:column */
+            flex: 1; /* Takes 1 part of width relative to .editor-column */
+            /* Inherits .panel styles for padding, display:flex, flex-direction:column */
         }
+
         #exercise-content-area {
-          flex-grow: 1; /* Takes available vertical space in #exercise-panel */
-          overflow-y: auto; /* Scrollbar for exercise text if it overflows */
-          border: 1px solid #ccc; /* Consistent border style */
-          padding: 5px; /* Inner padding for the exercise content */
-          box-sizing: border-box;
+            flex-grow: 1; /* Takes available vertical space in #exercise-panel */
+            overflow-y: auto; /* Scrollbar for exercise text if it overflows */
+            border: 1px solid #ccc; /* Consistent border style */
+            padding: 5px; /* Inner padding for the exercise content */
+            box-sizing: border-box;
         }
+
         .editor-column {
-          flex: 1.5; /* Takes 1.5 parts of width, making it wider than exercise panel (40%/60% split) */
-          display: flex;
-          flex-direction: column; /* Stack input and output vertically */
-          overflow: hidden; /* Children will manage their own scrolling */
+            flex: 1.5; /* Takes 1.5 parts of width, making it wider than exercise panel (40%/60% split) */
+            display: flex;
+            flex-direction: column; /* Stack input and output vertically */
+            overflow: hidden; /* Children will manage their own scrolling */
         }
+
         #rst-input-area { /* This is a .panel */
-          flex: 1; /* Takes 1 part of height in .editor-column */
+            flex: 1; /* Takes 1 part of height in .editor-column */
         }
+
         #rst-output-area { /* This is a .panel */
-          flex: 1; /* Takes 1 part of height in .editor-column */
+            flex: 1; /* Takes 1 part of height in .editor-column */
         }
+
         .panel h2 {
             margin-top: 0;
             font-size: 1.2em;
         }
+
         #rst-input {
-          width: 100%;
-          flex-grow: 1; /* Takes available space in the panel */
-          box-sizing: border-box;
-          font-family: monospace;
-          font-size: 1em;
-          border: 1px solid #ccc;
+            width: 100%;
+            flex-grow: 1; /* Takes available space in the panel */
+            box-sizing: border-box;
+            font-family: monospace;
+            font-size: 1em;
+            border: 1px solid #ccc;
         }
+
         #rst-output {
-          border: 1px solid #ccc;
-          flex-grow: 1; /* Takes available space in the panel */
-          overflow-y: auto; /* Scrollbar for content overflow */
-          padding: 5px;
-          box-sizing: border-box;
+            border: 1px solid #ccc;
+            flex-grow: 1; /* Takes available space in the panel */
+            overflow-y: auto; /* Scrollbar for content overflow */
+            padding: 5px;
+            box-sizing: border-box;
         }
+
         /* Styles for docutils system messages */
         aside.system-message {
-          background-color: #ffffe0; /* Pale yellow */
-          border: 1px solid #e6e6c3;
-          padding: 10px;
-          margin-bottom: 10px;
+            background-color: #ffffe0; /* Pale yellow */
+            border: 1px solid #e6e6c3;
+            padding: 10px;
+            margin-bottom: 10px;
         }
+
         aside.system-message p.system-message-title {
-          background-color: #fdd; /* Pale red */
-          color: #333;
-          font-weight: bold;
-          padding: 5px;
-          margin-top: 0;
-          margin-bottom: 5px;
-          border-bottom: 1px solid #e6c3c3;
+            background-color: #fdd; /* Pale red */
+            color: #333;
+            font-weight: bold;
+            padding: 5px;
+            margin-top: 0;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #e6c3c3;
         }
+
         aside.system-message p, aside.system-message pre {
             margin-top: 0;
             margin-bottom: 5px;
         }
+
         aside.system-message pre.literal-block {
             background-color: #f0f0f0; /* Light grey for code blocks within messages */
             padding: 5px;
             border: 1px solid #ddd;
             overflow-x: auto;
         }
+
         .button-like {
             display: inline-block;
             padding: 8px 15px;
@@ -114,14 +130,23 @@
             border-radius: 4px;
             transition: background-color 0.15s ease-in-out;
         }
+
         .button-like:hover {
             background-color: #0056b3;
         }
+
         #rst-output-area #output-footer {
             text-align: right; /* Aligns button to the right */
             padding-top: 10px; /* Space above the button */
             flex-shrink: 0; /* Prevent footer from shrinking */
         }
+
+        #exercise-panel #exercise-footer {
+            text-align: left; /* Aligns button to the left */
+            padding-top: 10px; /* Space above the button */
+            flex-shrink: 0; /* Prevent footer from shrinking */
+        }
+
         #page-loader {
             position: fixed;
             top: 0;
@@ -135,6 +160,7 @@
             z-index: 9999;
             flex-direction: column;
         }
+
         .loader-spinner {
             border: 8px solid #f3f3f3; /* Light grey */
             border-top: 8px solid #3498db; /* Blue */
@@ -143,47 +169,59 @@
             height: 60px;
             animation: spin 1s linear infinite;
         }
+
         #page-loader p {
             margin-top: 20px;
             font-size: 1.2em;
             color: #333;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
         /* Initially hide content until loader is done */
         body > h1, body > .container {
             display: none;
         }
-      </style>
-  </head>
-    <body>
-      <div id="page-loader">
-        <div class="loader-spinner"></div>
-        <p>Loading Lesson...</p>
-      </div>
-      <h1 id="page-main-title"></h1>
-      <div class="container">
-        <div class="panel" id="exercise-panel">
-          <div id="exercise-content-area">
+    </style>
+</head>
+<body>
+<div id="page-loader">
+    <div class="loader-spinner"></div>
+    <p>Loading Lesson...</p>
+</div>
+<h1 id="page-main-title">Interactive reStructuredText Lessons</h1>
+<div class="container">
+    <div class="panel" id="exercise-panel">
+        <div id="exercise-content-area">
             <!-- Placeholder for exercise text -->
             <p>The exercise description will appear here.</p>
-          </div>
         </div>
-        <div class="editor-column">
-          <div class="panel" id="rst-input-area">
-            <textarea id="rst-input" py-input="render_rst_on_input" py-keydown="handle_keydown" placeholder="Type reStructuredText here..."></textarea>
-          </div>
-          <div class="panel" id="rst-output-area">
+        <div id="exercise-footer">
+            <a href="/index.html" id="toc-button" class="button-like">&laquo; Table of Contents</a>
+        </div>
+    </div>
+    <div class="editor-column">
+        <div class="panel" id="rst-input-area">
+            <textarea id="rst-input" py-input="render_rst_on_input" py-keydown="handle_keydown"
+                      placeholder="Type reStructuredText here..."></textarea>
+        </div>
+        <div class="panel" id="rst-output-area">
             <h2>Preview:</h2>
             <div id="rst-output" style="flex-grow: 1;"></div>
             <div id="output-footer">
-              <a href="#" id="next-lesson-button" class="button-like" style="display: none;">Next Lesson &raquo;</a>
+                <a href="#" id="next-lesson-button" class="button-like" style="display: none;">Next
+                    Lesson &raquo;</a>
             </div>
-          </div>
         </div>
-      </div>
-      <script type="py" src="./main.py" config="./pyscript.toml"></script>
-    </body>
+    </div>
+</div>
+<script type="py" src="./main.py" config="./pyscript.toml"></script>
+</body>
 </html>
