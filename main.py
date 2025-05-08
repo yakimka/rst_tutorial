@@ -1,5 +1,5 @@
 import io
-from pyscript import document
+from pyscript import document, fetch
 from docutils.core import publish_parts
 
 def render_rst_on_input(event=None):
@@ -110,3 +110,18 @@ def render_rst(rst: str) -> str:
         return f"<pre style='color: red;'>Error rendering reStructuredText:\n{str(e)}</pre>"
 
     return parts['html_body']
+
+
+async def load_text_file(url_path: str) -> str:
+    """
+    Asynchronously loads a text file from the given URL path.
+    Returns the file content as a string, or an error message if fetching fails.
+    """
+    try:
+        response = await fetch(url_path)
+        if response.ok:
+            return await response.text()
+        else:
+            return f"Error: Could not load file {url_path}. Status: {response.status}"
+    except Exception as e:
+        return f"Error: Exception while fetching {url_path}. {str(e)}"
