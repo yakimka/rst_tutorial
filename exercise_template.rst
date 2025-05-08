@@ -47,7 +47,7 @@ bold/italic text, code blocks for syntax examples, etc.)
 
 Remember to be clear and guide the student effectively.
 
-# -Example-
+# Lesson Example
 
 .. This is a comment in reStructuredText.
    The reStructuredText content below this line will be pre-loaded into the

@@ -50,7 +50,8 @@ Familiarize yourself with the example below. Try making small changes:
 3. Add a new line of ``inline literal text``.
    Observe how your changes are rendered in the HTML output panel.
 
-# -Example-
+# Lesson Example
+
 This is a simple paragraph in reStructuredText.
 It's written in plain text.
 

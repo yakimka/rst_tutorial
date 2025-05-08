@@ -76,7 +76,7 @@ async def load_exercise_from_url():
     body_container_element = document.querySelector("body > div.container")
 
 
-    EXAMPLE_DELIMITER = "# -Example-"
+    EXAMPLE_DELIMITER = "# Lesson Example"
     DEFAULT_PAGE_TITLE = "reStructuredText Live Editor"
 
     if exercise_id:
