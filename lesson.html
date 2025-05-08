@@ -6,9 +6,10 @@
     <title>reStructuredText Live Editor</title>
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
     <link rel="stylesheet" href="./css/minimal.css">
-<!--    <link rel="stylesheet" href="./css/plain.css">-->
-<!--    <link rel="stylesheet" href="./css/responsive.css">-->
+    <!--    <link rel="stylesheet" href="./css/plain.css">-->
+    <!--    <link rel="stylesheet" href="./css/responsive.css">-->
     <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+    <script src="./js/indent-textarea.4.0.0.js"></script>
     <style>
         body {
             font-family: sans-serif;
@@ -226,5 +227,14 @@
     </div>
 </div>
 <script type="py" src="./main.py" config="./pyscript.toml"></script>
+<script>
+    const textarea = document.querySelector('#rst-input'); // Use a more specific selector if possible
+    if (textarea && typeof enableTabToIndent === 'function') {
+        enableTabToIndent(textarea);
+    } else {
+        if (!textarea) console.error('Textarea not found for tab indentation setup.');
+        if (typeof enableTabToIndent !== 'function') console.error('enableTabToIndent function not found.');
+    }
+</script>
 </body>
 </html>
