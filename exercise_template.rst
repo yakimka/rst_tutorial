@@ -15,6 +15,9 @@ Lesson X.Y: Lesson Title
    reStructuredText input area (middle-right panel) and rendered as HTML in the
    output area (bottom-right panel).
 
+   When writing reStructuredText, please try to keep line lengths between 80 and 120 characters
+   for better readability.
+
    Replace "Lesson X: Lesson Title" with the actual lesson number and title.
    Fill in the description and task for the student below.
    Don't copy this block to the lesson.
