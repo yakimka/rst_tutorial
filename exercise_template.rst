@@ -43,14 +43,13 @@ Remember to be clear and guide the student effectively.
 
 # -Example-
 
-.. IMPORTANT::
+.. This is a comment in reStructuredText.
    The reStructuredText content below this line will be pre-loaded into the
    interactive editor for the student. It should be a practical example related
    to the lesson, which the student can modify and learn from.
    It can be a complete, working example, or an example with intentional mistakes
    for the student to fix, depending on the lesson's goal.
 
-.. This is a comment in reStructuredText.
    Start your example for the student here.
    For instance, if the lesson is about headings, you might include:
 
