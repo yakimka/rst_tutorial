@@ -72,7 +72,7 @@ async def load_exercise_from_url():
     next_button_element = document.querySelector("#next-lesson-button")
     page_loader_element = document.querySelector("#page-loader")
     # Also get direct references to the main content containers to show them
-    body_h1_element = document.querySelector("body > h1#page-main-title") # More specific selector
+    body_header_element = document.querySelector("body > header") # Updated selector
     body_container_element = document.querySelector("body > div.container")
 
 
@@ -152,8 +152,8 @@ async def load_exercise_from_url():
     # Hide loader and show content, regardless of outcome
     if page_loader_element:
         page_loader_element.style.display = "none"
-    if body_h1_element:
-        body_h1_element.style.display = "block" # Or "flex" or whatever its original display was if needed
+    if body_header_element: # Updated variable name
+        body_header_element.style.display = "flex" # header is now a flex container
     if body_container_element:
         body_container_element.style.display = "flex"
 
