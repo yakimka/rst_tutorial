@@ -1,4 +1,5 @@
 import io
+import js  # To access URL parameters
 from pyscript import document, fetch
 from docutils.core import publish_parts
 
@@ -125,3 +126,39 @@ async def load_text_file(url_path: str) -> str:
             return f"Error: Could not load file {url_path}. Status: {response.status}"
     except Exception as e:
         return f"Error: Exception while fetching {url_path}. {str(e)}"
+
+
+async def load_exercise_from_url():
+    """
+    Loads exercise content from an .rst file specified by the 'id' URL parameter
+    and renders it into the exercise panel.
+    """
+    params = js.URLSearchParams.new(js.window.location.search)
+    exercise_id = params.get("id")
+    exercise_div = document.querySelector("#exercise-content-area")
+
+    if exercise_id:
+        file_path = f"/l/{exercise_id}.rst"
+        rst_content = await load_text_file(file_path)
+        
+        # Check if load_text_file returned an error message
+        if rst_content.startswith("Error:"):
+            html_content = f"<p style='color: red;'>{rst_content}</p>"
+        else:
+            # If content loaded successfully, render it as RST
+            html_content = render_rst(rst_content)
+            
+        exercise_div.innerHTML = html_content
+    else:
+        # If no 'id' parameter, the default placeholder text in index.html will remain.
+        # Or a message could be set here:
+        # exercise_div.innerHTML = "<p>No exercise ID specified in the URL.</p>"
+        pass
+
+async def main_app_setup():
+    """Main function to run on script load to set up the application."""
+    await load_exercise_from_url()
+    # Other initial setup tasks can be added here in the future.
+
+# Call the main setup function. PyScript will handle running this async function.
+main_app_setup()
