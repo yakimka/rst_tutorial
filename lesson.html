@@ -13,6 +13,15 @@
     <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
     <script src="./js/indent-textarea.4.0.0.js"></script>
     <style>
+        /*:root {*/
+        /*    --pico-font-size: 100%; !* Adjust this value to make fonts smaller or larger *!*/
+        /*}*/
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
         h1 {
             text-align: center;
             margin-top: 0.5em;
@@ -42,7 +51,7 @@
         #exercise-content-area {
             flex-grow: 1; /* Takes available vertical space in #exercise-panel */
             overflow-y: auto; /* Scrollbar for exercise text if it overflows */
-            border: 1px solid #ccc; /* Consistent border style */
+            border: 1px solid var(--pico-muted-border-color); /* Consistent border style */
             padding: 5px; /* Inner padding for the exercise content */
             box-sizing: border-box;
         }
@@ -62,22 +71,17 @@
             flex: 1; /* Takes 1 part of height in .editor-column */
         }
 
-        .panel h2 {
-            margin-top: 0;
-            font-size: 1.2em;
-        }
-
         #rst-input {
             width: 100%;
             flex-grow: 1; /* Takes available space in the panel */
             box-sizing: border-box;
             font-family: monospace;
             font-size: 1em;
-            border: 1px solid #ccc;
+            border: 1px solid var(--pico-muted-border-color);
         }
 
         #rst-output {
-            border: 1px solid #ccc;
+            border: 1px solid var(--pico-muted-border-color);
             flex-grow: 1; /* Takes available space in the panel */
             overflow-y: auto; /* Scrollbar for content overflow */
             padding: 5px;
@@ -86,20 +90,20 @@
 
         /* Styles for docutils system messages */
         aside.system-message {
-            background-color: #ffffe0; /* Pale yellow */
-            border: 1px solid #e6e6c3;
+            background-color: var(--pico-table-row-stripped-background-color); /* Using a light, neutral Pico variable */
+            border: 1px solid var(--pico-muted-border-color);
             padding: 10px;
             margin-bottom: 10px;
         }
 
         aside.system-message p.system-message-title {
-            background-color: #fdd; /* Pale red */
-            color: #333;
+            background-color: var(--pico-secondary-background); /* Using a Pico background */
+            color: var(--pico-secondary-inverse); /* Text color for the above background */
             font-weight: bold;
             padding: 5px;
             margin-top: 0;
             margin-bottom: 5px;
-            border-bottom: 1px solid #e6c3c3;
+            border-bottom: 1px solid var(--pico-muted-border-color);
         }
 
         aside.system-message p, aside.system-message pre {
@@ -108,9 +112,9 @@
         }
 
         aside.system-message pre.literal-block {
-            background-color: #f0f0f0; /* Light grey for code blocks within messages */
+            background-color: var(--pico-code-background-color); 
             padding: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--pico-muted-border-color);
             overflow-x: auto;
         }
 
@@ -141,8 +145,8 @@
         }
 
         .loader-spinner {
-            border: 8px solid #f3f3f3; /* Light grey */
-            border-top: 8px solid #3498db; /* Blue */
+            border: 8px solid var(--pico-form-element-background-color); /* Light grey base from Pico */
+            border-top: 8px solid var(--pico-primary); /* Blue from Pico */
             border-radius: 50%;
             width: 60px;
             height: 60px;
@@ -152,7 +156,7 @@
         #page-loader p {
             margin-top: 20px;
             font-size: 1.2em;
-            color: #333;
+            color: var(--pico-color);
         }
 
         @keyframes spin {
@@ -192,7 +196,6 @@
                       placeholder="Type reStructuredText here..."></textarea>
         </div>
         <div class="panel" id="rst-output-area">
-            <h2>Preview:</h2>
             <div id="rst-output" style="flex-grow: 1;"></div>
             <div id="output-footer">
                 <a href="#" id="next-lesson-button" role="button" style="display: none;">Next
