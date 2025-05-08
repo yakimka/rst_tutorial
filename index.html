@@ -100,13 +100,34 @@
             border: 1px solid #ddd;
             overflow-x: auto;
         }
+        .button-like {
+            display: inline-block;
+            padding: 8px 15px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.15s ease-in-out;
+        }
+        .button-like:hover {
+            background-color: #0056b3;
+        }
+        #rst-output-area #output-footer {
+            text-align: right; /* Aligns button to the right */
+            padding-top: 10px; /* Space above the button */
+            flex-shrink: 0; /* Prevent footer from shrinking */
+        }
       </style>
   </head>
     <body>
-      <h1>reStructuredText Live Editor</h1>
+      <h1 id="page-main-title"></h1>
       <div class="container">
         <div class="panel" id="exercise-panel">
-          <h2>Exercise</h2>
           <div id="exercise-content-area">
             <!-- Placeholder for exercise text -->
             <p>The exercise description will appear here.</p>
@@ -114,12 +135,14 @@
         </div>
         <div class="editor-column">
           <div class="panel" id="rst-input-area">
-            <h2>Input (reStructuredText)</h2>
             <textarea id="rst-input" py-input="render_rst_on_input" py-keydown="handle_keydown" placeholder="Type reStructuredText here..."></textarea>
           </div>
           <div class="panel" id="rst-output-area">
-            <h2>Output (HTML)</h2>
-            <div id="rst-output"></div>
+            <h2>Preview:</h2>
+            <div id="rst-output" style="flex-grow: 1;"></div>
+            <div id="output-footer">
+              <a href="#" id="next-lesson-button" class="button-like" style="display: none;">Next Lesson &raquo;</a>
+            </div>
           </div>
         </div>
       </div>

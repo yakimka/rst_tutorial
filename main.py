@@ -1,5 +1,6 @@
 import io
 import js  # To access URL parameters
+import re # For regular expression matching
 from pyscript import document, fetch
 from docutils.core import publish_parts
 
@@ -138,13 +139,47 @@ async def load_exercise_from_url():
     exercise_div = document.querySelector("#exercise-content-area")
     rst_input_element = document.querySelector("#rst-input")
     rst_output_div = document.querySelector("#rst-output")
+    page_main_title_element = document.querySelector("#page-main-title")
+    next_button_element = document.querySelector("#next-lesson-button")
 
     EXAMPLE_DELIMITER = "# -Example-"
+    DEFAULT_PAGE_TITLE = "reStructuredText Live Editor"
 
     if exercise_id:
         file_path = f"/l/{exercise_id}.rst"
         full_rst_content = await load_text_file(file_path)
         
+        chapter_title_from_meta = None
+        next_lesson_id_from_meta = None
+
+        if not full_rst_content.startswith("Error:"):
+            # Extract _Chapter metadata
+            chapter_pattern = re.compile(r"^\.\.\s*\n\s*_Chapter:\s*(.*)", re.MULTILINE)
+            chapter_match = chapter_pattern.search(full_rst_content)
+            if chapter_match:
+                chapter_title_from_meta = chapter_match.group(1).strip()
+
+            # Extract _Next metadata
+            next_pattern = re.compile(r"^\.\.\s*\n\s*_Next:\s*(.*)", re.MULTILINE)
+            next_match = next_pattern.search(full_rst_content)
+            if next_match:
+                extracted_next_id = next_match.group(1).strip()
+                if extracted_next_id: # Ensure it's not empty after stripping
+                    next_lesson_id_from_meta = extracted_next_id
+        
+        # Update page title
+        if page_main_title_element:
+            page_main_title_element.textContent = chapter_title_from_meta if chapter_title_from_meta else DEFAULT_PAGE_TITLE
+        
+        # Update Next button
+        if next_button_element:
+            if next_lesson_id_from_meta:
+                next_button_element.href = f"?id={next_lesson_id_from_meta}"
+                next_button_element.style.display = "inline-block"
+            else:
+                next_button_element.style.display = "none"
+
+        # Process exercise content
         exercise_rst_part = ""
         example_rst_part = ""
 
@@ -152,10 +187,14 @@ async def load_exercise_from_url():
             exercise_div.innerHTML = f"<p style='color: red;'>{full_rst_content}</p>"
             rst_input_element.value = ""
             rst_output_div.innerHTML = ""
+            # Ensure button is hidden on error too
+            if next_button_element: next_button_element.style.display = "none"
+            if page_main_title_element: page_main_title_element.textContent = DEFAULT_PAGE_TITLE
+
         else:
             if EXAMPLE_DELIMITER in full_rst_content:
                 parts = full_rst_content.split(EXAMPLE_DELIMITER, 1)
-                exercise_rst_part = parts[0].strip()
+                exercise_rst_part = parts[0].strip() # Comments like .. _Chapter will be ignored by render_rst
                 if len(parts) > 1:
                     example_rst_part = parts[1].strip()
             else:
@@ -163,16 +202,17 @@ async def load_exercise_from_url():
             
             exercise_div.innerHTML = render_rst(exercise_rst_part)
             rst_input_element.value = example_rst_part
-            # Calling render_rst_on_input will use the new value of rst_input_element
-            # to render the example in the rst_output_div.
             render_rst_on_input() 
             
-    else:
-        # If no 'id' parameter, the default placeholder text in index.html will remain for exercise.
-        # Clear input and output for example.
-        # exercise_div.innerHTML = "<p>No exercise ID specified in the URL.</p>" # Optional: message if no ID
+    else: # No exercise_id in URL
+        # Reset to default state
+        exercise_div.innerHTML = "<p>Select a lesson or start typing reStructuredText in the input area.</p>"
         rst_input_element.value = ""
         rst_output_div.innerHTML = ""
+        if page_main_title_element:
+            page_main_title_element.textContent = DEFAULT_PAGE_TITLE
+        if next_button_element:
+            next_button_element.style.display = "none"
         pass
 
 async def main_app_setup():

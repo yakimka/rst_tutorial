@@ -1,3 +1,8 @@
+..
+   _Chapter: 1. Introduction to reStructuredText
+..
+   _Next: 1_2_basic_syntax
+
 .. default-role:: literal
 
 =====================================

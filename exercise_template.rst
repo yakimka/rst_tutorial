@@ -1,5 +1,10 @@
+..
+   _Chapter: X. Main Chapter Title
+..
+   _Next: id_of_next_lesson
+
 ======================
-Lesson X: Lesson Title
+Lesson X.Y: Lesson Title
 ======================
 
 .. IMPORTANT::

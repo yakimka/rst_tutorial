@@ -1,3 +1,6 @@
+..
+   _Chapter: 1. Introduction to reStructuredText
+
 ==================================================================
 Lesson 1.2: Basic Syntax - Paragraphs, Blank Lines, & Indentation
 ==================================================================
@@ -23,6 +26,7 @@ blank lines, and indentation. Let's explore these fundamental concepts:
 **Your Task:**
 
 Examine the example provided in the input area.
+
 1.  Observe how paragraphs are formed and separated by blank lines.
 2.  Notice the use of indentation to create a block quote.
 3.  Experiment by:
