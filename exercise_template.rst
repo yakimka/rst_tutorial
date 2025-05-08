@@ -17,9 +17,7 @@ Lesson X.Y: Lesson Title
 
    Replace "Lesson X: Lesson Title" with the actual lesson number and title.
    Fill in the description and task for the student below.
-
-Lesson Description & Task
--------------------------
+   Don't copy this block to the lesson.
 
 (Provide a clear and concise explanation of the reStructuredText concept being taught in this lesson.
 Include any necessary theory, syntax explanations, and examples directly within this description
@@ -57,6 +55,7 @@ Remember to be clear and guide the student effectively.
 
    Start your example for the student here.
    For instance, if the lesson is about headings, you might include:
+   Don't copy this block to the lesson.
 
 My Example Document
 ===================
