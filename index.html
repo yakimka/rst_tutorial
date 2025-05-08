@@ -25,12 +25,35 @@
           overflow: hidden; /* Prevents scrollbars on container if children manage their own */
         }
         .panel {
-          flex: 1;
+          /* flex: 1; Removed, will be applied specifically to child panels for width/height distribution */
           padding: 10px;
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
-          overflow: hidden; /* For internal scrolling */
+          overflow: hidden; /* For internal scrolling, children will handle actual scroll */
+        }
+        #exercise-panel {
+          flex: 1; /* Takes 1 part of width relative to .editor-column */
+          /* Inherits .panel styles for padding, display:flex, flex-direction:column */
+        }
+        #exercise-content-area {
+          flex-grow: 1; /* Takes available vertical space in #exercise-panel */
+          overflow-y: auto; /* Scrollbar for exercise text if it overflows */
+          border: 1px solid #ccc; /* Consistent border style */
+          padding: 5px; /* Inner padding for the exercise content */
+          box-sizing: border-box;
+        }
+        .editor-column {
+          flex: 1.5; /* Takes 1.5 parts of width, making it wider than exercise panel (40%/60% split) */
+          display: flex;
+          flex-direction: column; /* Stack input and output vertically */
+          overflow: hidden; /* Children will manage their own scrolling */
+        }
+        #rst-input-area { /* This is a .panel */
+          flex: 1; /* Takes 1 part of height in .editor-column */
+        }
+        #rst-output-area { /* This is a .panel */
+          flex: 1; /* Takes 1 part of height in .editor-column */
         }
         .panel h2 {
             margin-top: 0;
@@ -82,13 +105,22 @@
     <body>
       <h1>reStructuredText Live Editor</h1>
       <div class="container">
-        <div class="panel" id="rst-input-area">
-          <h2>Input (reStructuredText)</h2>
-          <textarea id="rst-input" py-input="render_rst_on_input" py-keydown="handle_keydown" placeholder="Type reStructuredText here..."></textarea>
+        <div class="panel" id="exercise-panel">
+          <h2>Exercise</h2>
+          <div id="exercise-content-area">
+            <!-- Placeholder for exercise text -->
+            <p>The exercise description will appear here.</p>
+          </div>
         </div>
-        <div class="panel" id="rst-output-area">
-          <h2>Output (HTML)</h2>
-          <div id="rst-output"></div>
+        <div class="editor-column">
+          <div class="panel" id="rst-input-area">
+            <h2>Input (reStructuredText)</h2>
+            <textarea id="rst-input" py-input="render_rst_on_input" py-keydown="handle_keydown" placeholder="Type reStructuredText here..."></textarea>
+          </div>
+          <div class="panel" id="rst-output-area">
+            <h2>Output (HTML)</h2>
+            <div id="rst-output"></div>
+          </div>
         </div>
       </div>
       <script type="py" src="./main.py" config="./pyscript.toml"></script>
