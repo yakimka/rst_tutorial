@@ -39,9 +39,13 @@ understand *before* attempting the interactive example.)
 
 **Your Task:**
 
-(Clearly state what the student is expected to do or achieve using the interactive reStructuredText editor.
-For example: "Recreate the document structure shown below," or "Experiment with different list types,"
-or "Fix the errors in the provided example to make it render correctly.")
+(Clearly state what the student is expected to do.
+If the '# Lesson Example' (right panel) is pre-filled, your task should guide the student to modify
+the existing content and observe the changes. For example: "Modify the provided list to include a third item,"
+or "Change the heading level and see how it affects the output."
+If the task is to reproduce a piece of reStructuredText (e.g., an example shown rendered in this left panel),
+then the '# Lesson Example' (right panel) should ideally be empty or contain minimal boilerplate,
+and your task would be something like: "Recreate the document structure shown in the example above.")
 
 (You can use any reStructuredText markup here to format the lesson content, such as lists,
 bold/italic text, code blocks for syntax examples, etc.)
@@ -62,10 +66,13 @@ Remember to be clear and guide the student effectively.
 
 .. This is a comment in reStructuredText.
    The reStructuredText content below this line will be pre-loaded into the
-   interactive editor for the student. It should be a practical example related
-   to the lesson, which the student can modify and learn from.
-   It can be a complete, working example, or an example with intentional mistakes
-   for the student to fix, depending on the lesson's goal.
+   interactive editor for the student.
+   - If 'Your Task' involves modifying existing content, provide a relevant starting point here.
+     This could be a complete, working example, or an example with intentional mistakes
+     for the student to fix, depending on the lesson's goal.
+   - If 'Your Task' involves the student creating content from scratch (e.g., reproducing an
+     example shown in the lesson description), this section might be left empty or contain
+     only minimal boilerplate to guide the student.
 
    Don't copy this block to the lesson.
 
