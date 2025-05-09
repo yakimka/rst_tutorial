@@ -8,36 +8,38 @@ Lesson X.Y: Lesson Title
 ========================
 
 .. IMPORTANT::
-   This file serves as a template for creating new lessons.
-   The content above the "# Lesson Example" separator will be displayed as the lesson description
-   and instructions in the left panel of the application.
-   The content below the "# Lesson Example" separator will be pre-loaded into the
-   reStructuredText input area (middle-right panel) and rendered as HTML in the
-   output area (bottom-right panel).
+    This file serves as a template for creating new lessons.
+    The content above the "# Lesson Example" separator will be displayed as the lesson description
+    and instructions in the left panel of the application.
+    The content below the "# Lesson Example" separator will be pre-loaded into the
+    reStructuredText input area (middle-right panel) and rendered as HTML in the
+    output area (bottom-right panel).
 
-   When writing reStructuredText, please try to keep line lengths between 80 and 120 characters
-   for better readability.
+    Don't use "# Lesson Example" in the lesson description.
+
+    When writing reStructuredText, please try to keep line lengths between 80 and 120 characters
+    for better readability.
 
     Intendation is 4 spaces long.
 
-   For inline code or literal text, use double backticks: ``text_goes_here``
+    For inline code or literal text, use double backticks: ``text_goes_here``
 
-   Always add links to relevant sections of the official
-   `reStructuredText Markup Specification <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>`_
-   towards the end of the lesson's explanatory text, before the "Your Task:" section.
-   Use anchors from `rst_docs/restructuredtext.rst` for specific sections.
+    Always add links to relevant sections of the official
+    `reStructuredText Markup Specification <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>`_
+    towards the end of the lesson's explanatory text, before the "Your Task:" section.
+    Use anchors from `rst_docs/restructuredtext.rst` for specific sections.
 
-   * This is a bullet list.
-     Lists must be separated from surrounding text by blank lines (above and below).
-   * It has two items.
+    * This is a bullet list.
+      Lists must be separated from surrounding text by blank lines (above and below).
+    * It has two items.
 
-   1. This is a numbered list.
-      It also needs blank lines around it.
-   2. It also has two items.
+    1. This is a numbered list.
+       It also needs blank lines around it.
+    2. It also has two items.
 
-   Replace "Lesson X: Lesson Title" with the actual lesson number and title.
-   Fill in the description and task for the student below.
-   Don't copy this block to the lesson.
+    Replace "Lesson X: Lesson Title" with the actual lesson number and title.
+    Fill in the description and task for the student below.
+    Don't copy this block to the lesson.
 
 (Provide a clear and concise explanation of the reStructuredText concept being taught in this lesson.
 Include any necessary theory, syntax explanations, and examples directly within this description
@@ -59,32 +61,32 @@ bold/italic text, code blocks for syntax examples, etc.)
 
 .. code-block:: rst
 
-   Example of how to show syntax if needed in the description:
+    Example of how to show syntax if needed in the description:
 
-   * This is a bullet list
-   * It has two items
+    * This is a bullet list
+    * It has two items
 
-   1. This is a numbered list
-   2. It also has two items
+    1. This is a numbered list
+    2. It also has two items
 
 Remember to be clear and guide the student effectively.
 
 # Lesson Example
 
 .. This is a comment in reStructuredText.
-   The reStructuredText content below this line will be pre-loaded into the
-   interactive editor for the student.
-   - If 'Your Task' involves modifying existing content, provide a relevant starting point here.
+    The reStructuredText content below this line will be pre-loaded into the
+    interactive editor for the student.
+    - If 'Your Task' involves modifying existing content, provide a relevant starting point here.
      This could be a complete, working example, or an example with intentional mistakes
      for the student to fix, depending on the lesson's goal.
-   - If 'Your Task' involves the student creating content from scratch (e.g., reproducing an
+    - If 'Your Task' involves the student creating content from scratch (e.g., reproducing an
      example shown in the lesson description), this section might be left empty or contain
      only minimal boilerplate to guide the student.
 
-   Don't copy this block to the lesson.
+    Don't copy this block to the lesson.
 
-   Start your example for the student here.
-   For instance, if the lesson is about headings, you might include:
+    Start your example for the student here.
+    For instance, if the lesson is about headings, you might include:
 
 My Example Document
 ===================
@@ -95,6 +97,7 @@ Subsection
 ----------
 
 This is a paragraph under a subsection.
-   You can also include more complex examples.
-   Make sure this part is valid reStructuredText or intentionally contains
-   elements the student needs to work with or correct.
+
+    You can also include more complex examples.
+    Make sure this part is valid reStructuredText or intentionally contains
+    elements the student needs to work with or correct.

@@ -136,6 +136,8 @@ async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
         logger.info("Using preloaded lesson: %s", lesson_id)
     else:
         lesson, err = await fetch_and_parse_lesson(lesson_id)
+        if push_to_history and err == "not_found":
+            set_lesson_id_in_url(lesson_id)
         if err:
             display_error(is404=err == "not_found")
             return
