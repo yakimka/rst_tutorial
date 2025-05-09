@@ -18,6 +18,8 @@ Lesson X.Y: Lesson Title
    When writing reStructuredText, please try to keep line lengths between 80 and 120 characters
    for better readability.
 
+    Intendation is 4 spaces long.
+
    For inline code or literal text, use double backticks: ``text_goes_here``
 
    Always add links to relevant sections of the official

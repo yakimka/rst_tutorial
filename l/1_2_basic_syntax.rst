@@ -39,13 +39,13 @@ If a paragraph is indented relative to the preceding text, it becomes a block qu
 
 .. code-block:: rst
 
-   This is a normal paragraph.
+    This is a normal paragraph.
 
        This paragraph is indented,
        so it will be treated as a block quote.
        It can also span multiple lines.
 
-   This paragraph is back at the original indentation level.
+    This paragraph is back at the original indentation level.
 
 We will explore more uses of indentation for lists and other constructs in later lessons.
 
@@ -78,8 +78,8 @@ You can add more text to it, or create new paragraphs below.
 
 Remember, a blank line is needed to start a new paragraph.
 
-   And indentation is used for things like block quotes.
-   Try to make this quote longer!
+    And indentation is used for things like block quotes.
+    Try to make this quote longer!
 
 This text follows the initial indented block.
 Try adding more content here.
