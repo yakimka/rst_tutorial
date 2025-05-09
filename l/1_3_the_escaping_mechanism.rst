@@ -8,7 +8,7 @@ Lesson 1.3: The Escaping Mechanism (\\)
 =======================================
 
 Sometimes, you'll want to use characters that normally have a special meaning in
-reStructuredText (like `*` for emphasis, or ``` `` ``` for inline literals) as
+reStructuredText (like `*` for emphasis, or \`\` for inline literals) as
 literal characters in your text. For example, you might want to write about
 an asterisk itself, or show a command that uses backticks.
 
@@ -45,6 +45,9 @@ reStructuredText is often smart enough to know when a character isn't intended
 as markup (e.g., an asterisk in the middle of a word like "example*word").
 However, when in doubt, or when a character is at the beginning/end of a word
 or surrounded by spaces in a way that could trigger markup, escaping is the way to go.
+
+For further details, consult the `Escaping Mechanism <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escape>`_
+section in the official reStructuredText documentation.
 
 **Your Task:**
 

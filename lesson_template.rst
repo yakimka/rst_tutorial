@@ -20,6 +20,11 @@ Lesson X.Y: Lesson Title
 
    For inline code or literal text, use double backticks: ``text_goes_here``
 
+   Always add links to relevant sections of the official
+   `reStructuredText Markup Specification <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>`_
+   towards the end of the lesson's explanatory text, before the "Your Task:" section.
+   Use anchors from `rst_docs/restructuredtext.rst` for specific sections.
+
    * This is a bullet list.
      Lists must be separated from surrounding text by blank lines (above and below).
    * It has two items.

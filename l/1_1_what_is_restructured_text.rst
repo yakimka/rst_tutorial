@@ -39,6 +39,9 @@ The main idea behind reStructuredText is to offer a markup system that is:
 
 In this tutorial, we'll explore these features step by step.
 
+For a comprehensive overview of the language, you can refer to the official
+`reStructuredText Markup Specification <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>`_.
+
 .. _Docutils: https://docutils.sourceforge.io/
 
 **Your Task:**

@@ -49,6 +49,11 @@ If a paragraph is indented relative to the preceding text, it becomes a block qu
 
 We will explore more uses of indentation for lists and other constructs in later lessons.
 
+For more details, you can consult the official documentation on
+`Paragraphs <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#paragraphs>`_
+and the general rules for `Whitespace <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#whitespace>`_
+(which includes information on Blank Lines and Indentation).
+
 **Your Task:**
 
 The editor below contains some initial text. Your task is to modify and add to it:

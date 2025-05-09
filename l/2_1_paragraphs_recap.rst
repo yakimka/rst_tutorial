@@ -25,6 +25,10 @@ Paragraphs can contain various inline markup elements, which we'll cover in
 upcoming lessons (like emphasis, strong emphasis, inline literals, etc.). For now,
 let's focus on creating simple text paragraphs.
 
+For a detailed explanation, refer to the official documentation on
+`Paragraphs <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#paragraphs>`_
+and `Block Quotes <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#block-quotes>`_.
+
 **Your Task:**
 
 The editor below already contains several paragraphs and an indented block (a block quote).
