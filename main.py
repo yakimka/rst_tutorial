@@ -87,12 +87,12 @@ async def load_text_file(url_path: str) -> str | None:
     """
     try:
         response = await fetch(url_path)
-        if response.ok:
-            return await response.text()
-        else:
-            raise LoadError(await response.text(), status=response.status)
     except Exception as e:
         raise LoadError(str(e), status=None) from None
+    if response.ok:
+        return await response.text()
+
+    raise LoadError(await response.text(), status=response.status)
 
 
 async def fetch_and_parse_lesson(lesson_id: str) -> tuple[Lesson | None, str]:
@@ -178,6 +178,7 @@ def display_error(is404: bool = False) -> None:
     lesson_div = document.querySelector("#lesson-content-area")
     rst_input_element = document.querySelector("#rst-input")
     next_button_element = document.querySelector("#next-lesson-button")
+    output_div = document.querySelector("#rst-output")
 
     message = "Error loading lesson. Please try again later."
     if is404:
@@ -185,6 +186,7 @@ def display_error(is404: bool = False) -> None:
     lesson_div.innerHTML = message
 
     rst_input_element.value = ""
+    output_div.innerHTML = ""
     next_button_element.style.display = "none"
 
 
