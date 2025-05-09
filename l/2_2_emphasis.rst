@@ -19,8 +19,9 @@ Key points for using emphasis:
     For example, ``*this is correct*``, but ``* this is not *``.
 *   **Inline:** Emphasis is an inline markup, meaning it applies to text within a block-level
     element like a paragraph.
-*   **Recognition:** The parser follows specific `inline markup recognition rules <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules>`_ to distinguish
-    emphasis from literal asterisks (e.g., in multiplication or pointers). Generally,
+*   **Recognition:** The parser follows specific
+    `inline markup recognition rules <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules>`_
+    to distinguish emphasis from literal asterisks (e.g., in multiplication or pointers). Generally,
     if an asterisk is surrounded by whitespace or is part of a word without a matching
     closing asterisk, it won't be treated as emphasis.
 
