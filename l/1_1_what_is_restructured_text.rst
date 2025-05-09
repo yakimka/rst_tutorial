@@ -43,12 +43,20 @@ In this tutorial, we'll explore these features step by step.
 
 **Your Task:**
 
-Familiarize yourself with the example below. Try making small changes:
+The example text below is pre-loaded in the interactive editor.
+Your task is to modify this existing text. Try the following:
 
-1. Add a new paragraph.
-2. Try changing some text to be *emphasized* (italic) or **strongly emphasized** (bold).
-3. Add a new line of ``inline literal text``.
-   Observe how your changes are rendered in the HTML output panel.
+1.  Add a new paragraph of your own after the existing paragraphs.
+    For example, write a short sentence about what you hope to learn.
+2.  In one of the original paragraphs (like the first or second one),
+    select some words and make them *emphasized* (italic).
+    Then, select different words in another original paragraph and make them
+    **strongly emphasized** (bold).
+3.  Add a new sentence to any paragraph (or your new paragraph) that
+    includes ``inline literal text``. For instance, you could write:
+    "I want to learn how to use the ``.. code-block::`` directive."
+
+Observe how your changes are rendered in the HTML output panel as you type.
 
 # Lesson Example
 
