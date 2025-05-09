@@ -7,6 +7,8 @@ COPY ./css ./css
 COPY ./l ./l
 COPY lesson.html index.html ./
 
-RUN echo "cp -a /app /public" > /run.sh && chmod +x /run.sh
+RUN echo "#!/bin/sh" > /run.sh && \
+    echo "cp -a /app /public" >> /run.sh && \
+    chmod +x /run.sh
 
 CMD ["/run.sh"]
