@@ -8,7 +8,9 @@ COPY ./l ./l
 COPY lesson.html index.html ./
 
 RUN echo "#!/bin/sh" > /run.sh && \
-    echo "cp -a /app /public" >> /run.sh && \
+    echo "mkdir -p /public" >> /run.sh && \
+    echo "rm -rf /public/*" >> /run.sh && \
+    echo "cp -a /app/. /public/" >> /run.sh && \
     chmod +x /run.sh
 
 CMD ["/run.sh"]
