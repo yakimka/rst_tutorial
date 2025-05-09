@@ -1,0 +1,78 @@
+name: CI\CD
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+  # Update docker hub retention policy
+  schedule:
+    - cron: "21 7 8 * *"
+
+env:
+  PIP_NO_CACHE_DIR: "off"
+  DOCKER_BUILDKIT: "1"
+  COMPOSE_DOCKER_CLI_BUILD: "1"
+
+  PROJECT_NAME: "rst_tutorial"
+  REGISTRY: "docker.io"
+  REGISTRY_USERNAME: "yakimka"
+  REGISTRY_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  release-image:
+    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check
+        run: |
+          pip install pre-commit
+          pre-commit run --all-files
+
+      - name: Prepare Docker
+        run: |
+          docker login "$REGISTRY" -u "$REGISTRY_USERNAME" --password="${REGISTRY_TOKEN}"
+          docker buildx create --use --driver=docker-container
+          docker --version && docker compose --version
+
+      # https://docs.docker.com/build/cache/backends/gha/
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
+      - name: Set push flag
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+        run: echo "PUSH_FLAG=--push" >> $GITHUB_ENV
+
+      - name: Build image
+        run: >
+          docker buildx build ${PUSH_FLAG:-}
+          --cache-to type=gha,mode=max,scope=$GITHUB_REF_NAME
+          --cache-from type=gha,scope=$GITHUB_REF_NAME
+          --platform=linux/arm64,linux/amd64
+          -t ${REGISTRY}/${REGISTRY_USERNAME}/${PROJECT_NAME}:latest rst_tutorial .
+
+  deploy:
+    name: Deploy To Production
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    needs: [ release-image ]
+    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+    steps:
+      - name: Update service
+        run: |
+          sleep 30
+          curl ${{ secrets.UPDATE_URL }}
