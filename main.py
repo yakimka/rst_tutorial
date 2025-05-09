@@ -173,6 +173,11 @@ def display_lesson(lesson: Lesson) -> None:
     else:
         next_button_element.style.display = "none"
 
+    lesson_div.scrollTop = 0
+    rst_input_element.scrollTop = 0
+    output_element = document.querySelector("#rst-output")
+    output_element.scrollTop = 0
+
 
 def display_error(is404: bool = False) -> None:
     lesson_div = document.querySelector("#lesson-content-area")
