@@ -189,7 +189,7 @@ def display_error(is404: bool = False) -> None:
 
 
 def go_to_main_page() -> None:
-    window.location.href = "/index.html"
+    window.location.href = "/"
 
 
 def get_current_lesson_id() -> str:
