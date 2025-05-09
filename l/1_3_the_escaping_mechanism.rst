@@ -48,14 +48,25 @@ or surrounded by spaces in a way that could trigger markup, escaping is the way 
 
 **Your Task:**
 
-In the example editor below:
+The editor below contains text demonstrating escaping, along with some lines for you to modify.
+Your task is to:
 
-1.  Write a sentence that includes the phrase "literal \*asterisks\* around a word"
-    where the asterisks are visible.
-2.  Write a sentence that displays "a literal \`backtick\` character".
-3.  Write a sentence that shows how to represent "a single literal backslash: \\".
-4.  Try to write the text `*emphasized*` without it being emphasized, and then
-    write \`\`literal\`\` without it being treated as an inline literal.
+1.  **Modify the existing lines** at the end of the example as instructed by the comments within the example text:
+
+    *   Change the line "This text should show *stars* not emphasis."
+        so that the asterisks (``*``) are displayed literally and the text is not emphasized.
+    *   Change the line "This text should show ``backticks`` not literal code."
+        so that the backticks (\`\`) are displayed literally and the text is not treated as an inline literal.
+    *   Ensure the file path "C:\\Users\\YourName." correctly displays literal backslashes.
+2.  After modifying the existing lines, **add new sentences** to the example to further practice escaping:
+
+    *   Add a new sentence that includes the exact phrase "my *word* here" but
+        with the asterisks displayed literally (e.g., "This is my \*word\* here.").
+    *   Add a new sentence that displays the characters "``literal_text``" including the literal backticks.
+    *   Add a new sentence that explicitly shows how to represent a single literal backslash character,
+        for example: "To show one backslash, you type two: \\\\".
+
+Observe how your changes are rendered in the HTML output panel.
 
 # Lesson Example
 
@@ -66,6 +77,7 @@ To show a literal backtick, you type \\\` like this: \`.
 What if you want to show a backslash? You type \\\\ like this: \\.
 
 Try to modify the text below to use escaping:
-This text should show *stars* not emphasis.
-This text should show ``backticks`` not literal code.
-This text should show a path like C:\\Users\\YourName.
+
+- This text should show *stars* not emphasis.
+- This text should show ``backticks`` not literal code.
+- This text should show a path like C:\\Users\\YourName.

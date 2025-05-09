@@ -51,11 +51,20 @@ We will explore more uses of indentation for lists and other constructs in later
 
 **Your Task:**
 
-1.  In the example editor, create three distinct paragraphs.
-2.  Experiment with using one, two, or even three blank lines between your paragraphs.
-    Notice that the rendered output remains the same.
-3.  Add a block quote after your third paragraph. Make sure it contains at least two lines of text.
-4.  Add a final paragraph after the block quote, returning to the normal indentation level.
+The editor below contains some initial text. Your task is to modify and add to it:
+
+1.  Currently, there are a few paragraphs and an indented block.
+    Identify them. Add at least one **new** distinct paragraph of your own.
+    For example, you could add it after the first paragraph or at the very end.
+2.  Experiment with the blank lines between the existing paragraphs and your new paragraph.
+    Try using one, two, or even three blank lines. Notice how the rendered output
+    separates paragraphs regardless of the exact number of blank lines (as long as there's at least one).
+3.  The example already contains an indented block (a block quote).
+    Modify this existing block quote by adding another line of text to it.
+    Then, add a **new** block quote after one of your normal paragraphs.
+    Ensure your new block quote also contains at least two lines of text.
+4.  After your new block quote, add a final paragraph, making sure it returns to the
+    normal (non-indented) indentation level.
 
 # Lesson Example
 

@@ -3,9 +3,9 @@
 ..
    _Next: 2_2_emphasis
 
-================================
+==============================
 Lesson 2.1: Paragraphs (Recap)
-================================
+==============================
 
 In reStructuredText, a **paragraph** is one of the most fundamental building
 blocks. It's simply a chunk of text separated from other blocks by one or more
@@ -27,14 +27,28 @@ let's focus on creating simple text paragraphs.
 
 **Your Task:**
 
-In the editor below:
+The editor below already contains several paragraphs and an indented block (a block quote).
+Your task is to work with this existing content and add to it:
 
-1.  Create at least three distinct paragraphs.
-2.  Make one of your paragraphs consist of multiple lines of text.
-3.  Try indenting one of your paragraphs (e.g., by 4 spaces) and observe how
-    it's rendered (it should look like a block quote).
-4.  Ensure there's at least one blank line separating each paragraph and the
-    indented block.
+1.  **Identify and Modify:**
+
+    *   Identify the distinct paragraphs and the block quote in the example.
+    *   Choose one of the existing non-indented paragraphs and add another sentence or two to it.
+2.  **Add New Content:**
+
+    *   Add at least one **new** paragraph of your own. This could be placed, for example,
+        after the existing block quote or between two of the original paragraphs.
+    *   Make your new paragraph consist of multiple lines of text.
+3.  **Experiment with Indentation:**
+
+    *   Take one of your newly added or modified paragraphs (that is not currently indented)
+        and indent it (e.g., by 4 spaces). Observe how it's rendered as a block quote.
+4.  **Verify Separation:**
+
+    *   Ensure there's at least one blank line separating each of your paragraphs and
+        any block quotes (both the original one and any new one you created).
+    *   Try using more than one blank line between some elements and notice that the
+        rendered output for separation remains consistent.
 
 # Lesson Example
 
