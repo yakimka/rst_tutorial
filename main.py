@@ -12,6 +12,8 @@ logger = logging.getLogger("lesson_page")
 
 
 # ===== Logic =====
+
+
 def render_rst(rst: str) -> str:
     if not rst.strip():
         return ""
@@ -127,7 +129,7 @@ async def load_lesson_from_url():
 
 
 def go_to_main_page() -> None:
-    raise ValueError(f"Error: {type}")
+    js.window.location.href = "/index.html"
 
 
 def render_lesson(lesson: Lesson) -> None:
