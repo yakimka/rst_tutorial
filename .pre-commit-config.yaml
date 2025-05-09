@@ -12,11 +12,12 @@ repos:
     hooks:
       - id: check-github-workflows
       - id: check-dependabot
-  - repo: https://github.com/sphinx-contrib/sphinx-lint
-    rev: v1.0.0
+  - repo: https://github.com/PyCQA/doc8
+    rev: v1.1.2
     hooks:
-      - id: sphinx-lint
-        exclude: rst_docs/*
+      - id: doc8
+        args: ["--max-line-length=120"]
+        exclude: rst_docs/
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.19.1
     hooks:

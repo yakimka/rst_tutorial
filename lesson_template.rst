@@ -3,9 +3,9 @@
 ..
    _Next: id_of_next_lesson
 
-======================
+========================
 Lesson X.Y: Lesson Title
-======================
+========================
 
 .. IMPORTANT::
    This file serves as a template for creating new lessons.
