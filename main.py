@@ -5,16 +5,13 @@ import re
 from typing import NamedTuple
 
 from docutils.core import publish_parts
-from pyscript import document, fetch
+from pyscript import document, fetch, ffi, window
 
 import js
 
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger("lesson_page")
 
-
-# ===== Global State =====
-_current_lesson_id: str | None = None
 _preloaded_lesson_cache: dict[str, "Lesson"] = {}
 
 
@@ -55,6 +52,8 @@ _next_pattern = re.compile(r"^\.\.\s*\n\s*_Next:\s*(.*)", re.MULTILINE)
 
 
 def parse_lesson(rst: str) -> Lesson | None:
+    if not rst:
+        return None
     example_delimiter = "# Lesson Example"
 
     chapter_match = _chapter_pattern.search(rst)
@@ -75,6 +74,12 @@ def parse_lesson(rst: str) -> Lesson | None:
     )
 
 
+class LoadError(Exception):
+    def __init__(self, message: str, status: int | None):
+        super().__init__(message)
+        self.status = status
+
+
 async def load_text_file(url_path: str) -> str | None:
     """
     Asynchronously loads a text file from the given URL path.
@@ -85,188 +90,134 @@ async def load_text_file(url_path: str) -> str | None:
         if response.ok:
             return await response.text()
         else:
-            logger.warning(
-                "Error: Could not load file %s. Status: %s", url_path, response.status
-            )
-            return None
+            raise LoadError(await response.text(), status=response.status)
     except Exception as e:
-        logger.warning("Error: Exception while fetching %s. %s", url_path, str(e))
-        return None
+        raise LoadError(str(e), status=None) from None
 
 
-async def fetch_and_parse_lesson(lesson_id: str) -> Lesson | None:
+async def fetch_and_parse_lesson(lesson_id: str) -> tuple[Lesson | None, str]:
     """Fetches, parses, and returns a lesson by its ID."""
     file_path = f"/l/{lesson_id}.rst"
-    full_rst_content = await load_text_file(file_path)
-    if not full_rst_content:
-        logger.warning(
-            f"Failed to fetch content for lesson {lesson_id} from {file_path}"
-        )
-        return None
-    lesson_data = parse_lesson(full_rst_content)
-    if not lesson_data:
-        logger.warning(f"Failed to parse content for lesson {lesson_id}")
-        return None
-    return lesson_data
+    try:
+        full_rst_content = await load_text_file(file_path)
+    except LoadError as exc:
+        if exc.status == 404:
+            return None, "not_found"
+        else:
+            return None, "network"
+    lesson = parse_lesson(full_rst_content)
+    if lesson is None:
+        return None, "invalid_lesson"
+    return lesson, ""
 
 
 async def preload_lesson(lesson_id: str) -> None:
-    """Preloads a lesson and stores it in the cache if successful."""
-    if not lesson_id or lesson_id in _preloaded_lesson_cache:
-        return  # No ID or already preloaded/being preloaded
+    if lesson_id in _preloaded_lesson_cache:
+        return
 
-    logger.info(f"Attempting to preload lesson: {lesson_id}")
-    lesson_data = await fetch_and_parse_lesson(lesson_id)
-    if lesson_data:
-        _preloaded_lesson_cache[lesson_id] = lesson_data
-        logger.info(f"Successfully preloaded lesson: {lesson_id}")
-    else:
-        logger.warning(f"Failed to preload lesson: {lesson_id}")
-        # If preload fails, button click will fallback to standard navigation.
+    lesson, _ = await fetch_and_parse_lesson(lesson_id)
+    if lesson:
+        _preloaded_lesson_cache[lesson_id] = lesson
+        logger.info("Successfully preloaded lesson: %s", lesson_id)
+        return
+
+    logger.warning("Failed to preload lesson: %s", lesson_id)
 
 
 # ===== UI =====
 
 
-def render_rst_on_input(event=None):
-    """
-    Renders reStructuredText from the input textarea to the output div.
-    Called on every input event in the textarea.
-    Manages a list of recent docutils errors and displays up to MAX_ERRORS_TO_DISPLAY.
-    """
-    input_element = document.querySelector("#rst-input")
-    rst_text = input_element.value
-    output_div = document.querySelector("#rst-output")
-    output_div.innerHTML = render_rst(rst_text)
+async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
+    if push_to_history:
+        set_load_lesson_loader()
 
-
-async def handle_next_lesson_click(event) -> None:
-    """Handles clicks on the 'Next Lesson' button for client-side navigation."""
-    event.preventDefault()
-    next_button_href = event.target.href
-
-    # Extract lesson_id from the button's href
-    try:
-        url_object = js.URL.new(next_button_href, js.window.location.origin)
-        params = js.URLSearchParams.new(url_object.search)
-        next_lesson_id = params.get("id")
-    except Exception as e:
-        logger.error(f"Error parsing next lesson URL '{next_button_href}': {e}")
-        js.window.location.href = next_button_href  # Fallback
-        return
-
-    if not next_lesson_id:
-        logger.warning(
-            "Next lesson ID not found in href, falling back to full navigation."
-        )
-        js.window.location.href = next_button_href  # Fallback
-        return
-
-    if next_lesson_id in _preloaded_lesson_cache:
-        logger.info(f"Rendering preloaded lesson: {next_lesson_id}")
-        await set_current_lesson(next_lesson_id, push_to_history=True)
+    if lesson_id in _preloaded_lesson_cache:
+        lesson = _preloaded_lesson_cache.get(lesson_id)
+        logger.info("Using preloaded lesson: %s", lesson_id)
     else:
-        logger.info(
-            "Next lesson %s not preloaded. Falling back to full navigation.",
-            next_lesson_id,
-        )
-        # Fallback to full page navigation
-        js.window.location.href = next_button_href
+        lesson, err = await fetch_and_parse_lesson(lesson_id)
+        if err:
+            display_error(is404=err == "not_found")
+            return
+
+    assert lesson is not None
+
+    display_lesson(lesson)
+
+    if push_to_history:
+        set_lesson_id_in_url(lesson_id)
+
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+
+    if lesson.next_lesson_id:
+        asyncio.create_task(preload_lesson(lesson.next_lesson_id))
+
+    if push_to_history:
+        reset_load_lesson_loader()
 
 
-def display_lesson(lesson_data: Lesson, lesson_id: str) -> None:
-    """Updates the DOM to display the given lesson."""
+def display_lesson(lesson: Lesson) -> None:
     lesson_div = document.querySelector("#lesson-content-area")
     rst_input_element = document.querySelector("#rst-input")
     page_main_title_element = document.querySelector("#page-main-title")
     next_button_element = document.querySelector("#next-lesson-button")
-    toc_button_element = document.querySelector("#toc-button")
 
-    page_main_title_element.textContent = lesson_data.main_chapter
-    toc_button_element.href = "/index.html"  # Ensure ToC always points to index
-
-    if lesson_data.next_lesson_id:
-        next_button_element.href = f"?id={lesson_data.next_lesson_id}"
+    page_main_title_element.textContent = lesson.main_chapter
+    lesson_div.innerHTML = render_rst(lesson.description)
+    rst_input_element.value = lesson.interactive
+    render_rst_on_input()
+    if lesson.next_lesson_id:
+        next_button_element.setAttribute("data-next-lesson-id", lesson.next_lesson_id)
         next_button_element.style.display = "inline-block"
-        # Remove old listener before adding a new one to prevent duplicates
-        next_button_element.removeEventListener("click", handle_next_lesson_click)
-        next_button_element.addEventListener("click", handle_next_lesson_click)
     else:
         next_button_element.style.display = "none"
 
-    lesson_div.innerHTML = render_rst(lesson_data.description)
-    rst_input_element.value = lesson_data.interactive
-    render_rst_on_input()  # Render the initial interactive content
 
+def display_error(is404: bool = False) -> None:
+    lesson_div = document.querySelector("#lesson-content-area")
+    rst_input_element = document.querySelector("#rst-input")
+    next_button_element = document.querySelector("#next-lesson-button")
 
-async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
-    """Loads, displays, and sets up the next preload for a lesson."""
-    global _current_lesson_id
+    message = "Error loading lesson. Please try again later."
+    if is404:
+        message = "Lesson not found. Please check the URL."
+    lesson_div.innerHTML = message
 
-    # Show loader while content is being fetched/rendered, if not initial load
-    # For initial load, loader is handled by initial_load itself.
-    # This simple check might need refinement for complex scenarios.
-    if push_to_history:  # Indicates a navigation, not the very first page load
-        page_loader_element = document.querySelector("#page-loader")
-        if page_loader_element:
-            page_loader_element.style.display = "flex"
-
-    lesson_data: Lesson | None = None
-    if lesson_id in _preloaded_lesson_cache:
-        lesson_data = _preloaded_lesson_cache.pop(lesson_id)  # Use and remove
-        logger.info("Using preloaded lesson: %s", lesson_id)
-    else:
-        logger.info("Fetching lesson directly: ", lesson_id)
-        lesson_data = await fetch_and_parse_lesson(lesson_id)
-
-    if lesson_data:
-        _current_lesson_id = lesson_id
-        display_lesson(lesson_data, lesson_id)
-
-        if push_to_history:
-            js.history.pushState({"lesson_id": lesson_id}, "", f"?id={lesson_id}")
-            logger.info("Pushed lesson %s to browser history.", lesson_id)
-
-        document.body.scrollTop = 0  # Scroll to top for new lesson
-        document.documentElement.scrollTop = 0
-
-        if lesson_data.next_lesson_id:
-            # Schedule preloading of the next lesson
-            asyncio.ensure_future(preload_lesson(lesson_data.next_lesson_id))
-    else:
-        logger.error(
-            "Failed to load or parse lesson %s. Redirecting to main page.", lesson_id
-        )
-        go_to_main_page()  # Fallback if lesson loading fails
-
-    if push_to_history:  # Hide loader after navigation content is ready
-        hide_loader()
-
-
-async def handle_popstate(event) -> None:
-    """Handles browser back/forward button navigation."""
-    params = js.URLSearchParams.new(js.window.location.search)
-    lesson_id_from_url = params.get("id")
-
-    logger.info(
-        "Popstate event. URL lesson ID: %s, Current lesson ID: %s",
-        lesson_id_from_url,
-        _current_lesson_id,
-    )
-
-    if lesson_id_from_url and lesson_id_from_url != _current_lesson_id:
-        await set_current_lesson(lesson_id_from_url, push_to_history=False)
-    elif (
-        not lesson_id_from_url and _current_lesson_id
-    ):  # Navigated to a URL without lesson ID (e.g. base page)
-        go_to_main_page()
+    rst_input_element.value = ""
+    next_button_element.style.display = "none"
 
 
 def go_to_main_page() -> None:
-    js.window.location.href = "/index.html"
+    window.location.href = "/index.html"
 
 
-def hide_loader() -> None:
+def get_current_lesson_id() -> str:
+    url = js.URL.new(window.location.href)
+    return url.searchParams.get("id") or ""
+
+
+def set_lesson_id_in_url(lesson_id: str) -> None:
+    url = js.URL.new(window.location.href)
+    url.searchParams.set("id", lesson_id)
+    window.history.pushState(None, "", url.href)
+
+
+def set_load_lesson_loader() -> None:
+    next_button_element = document.querySelector("#next-lesson-button")
+    if next_button_element:
+        next_button_element.setAttribute("aria-busy", "true")
+        next_button_element.setAttribute("disabled", "true")
+
+
+def reset_load_lesson_loader() -> None:
+    next_button_element = document.querySelector("#next-lesson-button")
+    if next_button_element:
+        next_button_element.removeAttribute("aria-busy")
+        next_button_element.removeAttribute("disabled")
+
+
+def hide_main_loader() -> None:
     page_loader_element = document.querySelector("#page-loader")
     body_header_element = document.querySelector("body > header")
     body_container_element = document.querySelector("body > div.container")
@@ -279,27 +230,40 @@ def hide_loader() -> None:
         body_container_element.style.display = "flex"
 
 
-async def initial_load() -> None:
-    """Loads the initial lesson based on URL and sets up the page."""
-    params = js.URLSearchParams.new(js.window.location.search)
-    lesson_id = params.get("id")
+# ===== Event Handlers =====
 
-    if not lesson_id:
-        logger.info("No lesson ID in URL, redirecting to main page.")
-        go_to_main_page()
-        return
 
-    await set_current_lesson(lesson_id, push_to_history=False)
-    hide_loader()  # Hide loader after the first lesson is fully processed
+def render_rst_on_input(event=None):
+    input_element = document.querySelector("#rst-input")
+    rst_text = input_element.value
+    output_div = document.querySelector("#rst-output")
+    output_div.innerHTML = render_rst(rst_text)
+
+
+async def handle_next_lesson_click(event) -> None:
+    event.preventDefault()
+    next_lesson_id = event.target.getAttribute("data-next-lesson-id")
+    await set_current_lesson(next_lesson_id, push_to_history=True)
+
+
+async def on_history_change(event):
+    lesson_id = get_current_lesson_id()
+    if lesson_id:
+        await set_current_lesson(lesson_id, push_to_history=False)
+
+
+# ===== Main Setup =====
 
 
 async def main_app_setup():
-    # Add popstate listener to handle browser navigation buttons
-    # Wrap lambda in asyncio.ensure_future for async event handlers
-    js.window.addEventListener(
-        "popstate", lambda event: asyncio.ensure_future(handle_popstate(event))
-    )
-    await initial_load()
+    proxy = ffi.create_proxy(on_history_change)
+    window.addEventListener("popstate", proxy)
+    if lesson_id := get_current_lesson_id():
+        await set_current_lesson(lesson_id, push_to_history=False)
+        hide_main_loader()
+        return
+
+    go_to_main_page()
 
 
 # Call the main setup function.
