@@ -5,13 +5,92 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Interactive reStructuredText Lessons</title>
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
-    <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/minimal.css">
-    <link rel="stylesheet" href="./css/responsive.css">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/pico.fluid.classless.cyan.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <!--    <link rel="stylesheet" href="./css/plain.css">-->
+    <!--    <link rel="stylesheet" href="./css/responsive.css">-->
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+    <script src="./js/split.min.js"></script>
+    <script src="./js/indent-textarea.4.0.0.js"></script>
 </head>
 <body>
-    <h1>Interactive reStructuredText Lessons</h1>
+<div id="page-loader">
+    <div class="loader-spinner"></div>
+    <p>Loading Lesson...</p>
+</div>
+<header>
+    <h4 id="page-main-title">Interactive reStructuredText Lessons</h4>
     <a href="#" id="theme_switcher"></a>
+</header>
+<div class="container">
+    <div class="panel" id="lesson-panel">
+        <div id="lesson-content-area">
+            <!-- Placeholder for lesson text -->
+            <p>The lesson description will appear here.</p>
+        </div>
+        <div id="lesson-footer">
+            <a href="/lesson.html" id="toc-button" role="button">&laquo; Table of Contents</a>
+        </div>
+    </div>
+    <div class="editor-column">
+        <div class="panel" id="rst-input-area">
+            <textarea id="rst-input" py-input="render_rst_on_input"
+                      placeholder="Type reStructuredText here..."></textarea>
+        </div>
+        <div class="panel" id="rst-output-area">
+            <div id="rst-output" style="flex-grow: 1;"></div>
+            <div id="output-footer">
+                <button data-next-lesson-id="" id="next-lesson-button" role="button"
+                        py-click="handle_next_lesson_click" style="display: none;">Next
+                    Lesson &raquo;
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="py" src="./main.py" config="./pyscript.toml"></script>
+<script>
+    const textarea = document.querySelector('#rst-input'); // Use a more specific selector if possible
+    if (textarea && typeof enableTabToIndent === 'function') {
+        enableTabToIndent(textarea);
+    } else {
+        if (!textarea) console.error('Textarea not found for tab indentation setup.');
+        if (typeof enableTabToIndent !== 'function') console.error('enableTabToIndent function not found.');
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Split(['#lesson-panel', '.editor-column'], {
+            sizes: [40, 60], // Initial sizes in percentage
+            minSize: [250, 350], // Minimum sizes in pixels for lesson-panel and editor-column respectively
+            gutterSize: 8,   // Size of the draggable gutter in pixels
+            cursor: 'col-resize',
+            // The following elementStyle and gutterStyle are recommended for flexbox layouts
+            elementStyle: (dimension, size, gutterSize) => ({
+                'flex-basis': `calc(${size}% - ${gutterSize}px)`,
+            }),
+            gutterStyle: (dimension, gutterSize) => ({
+                'flex-basis': `${gutterSize}px`,
+            }),
+        });
+
+        Split(['#rst-input-area', '#rst-output-area'], {
+            direction: 'vertical',
+            sizes: [50, 50], // Initial sizes for input and output areas
+            minSize: [100, 100], // Minimum height for input and output areas
+            gutterSize: 8,    // Size of the draggable gutter
+            cursor: 'row-resize',
+            elementStyle: (dimension, size, gutterSize) => ({
+                'flex-basis': `calc(${size}% - ${gutterSize}px)`,
+            }),
+            gutterStyle: (dimension, gutterSize) => ({
+                'flex-basis': `${gutterSize}px`,
+            }),
+        });
+    });
+</script>
 <script>
     // Theme switcher code https://github.com/RWDevelopment/theme_switch
     const html = document.documentElement
