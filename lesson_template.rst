@@ -67,9 +67,10 @@ Remember to be clear and guide the student effectively.
    It can be a complete, working example, or an example with intentional mistakes
    for the student to fix, depending on the lesson's goal.
 
+   Don't copy this block to the lesson.
+
    Start your example for the student here.
    For instance, if the lesson is about headings, you might include:
-   Don't copy this block to the lesson.
 
 My Example Document
 ===================

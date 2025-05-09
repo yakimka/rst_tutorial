@@ -58,14 +58,14 @@ async def load_text_file(url_path: str) -> str:
         return f"Error: Exception while fetching {url_path}. {str(e)}"
 
 
-async def load_exercise_from_url():
+async def load_lesson_from_url():
     """
-    Loads exercise content from an .rst file specified by the 'id' URL parameter
-    and renders it into the exercise panel.
+    Loads lesson content from an .rst file specified by the 'id' URL parameter
+    and renders it into the lesson panel.
     """
     params = js.URLSearchParams.new(js.window.location.search)
-    exercise_id = params.get("id")
-    exercise_div = document.querySelector("#exercise-content-area")
+    lesson_id = params.get("id")
+    lesson_div = document.querySelector("#lesson-content-area")
     rst_input_element = document.querySelector("#rst-input")
     rst_output_div = document.querySelector("#rst-output")
     page_main_title_element = document.querySelector("#page-main-title")
@@ -79,8 +79,8 @@ async def load_exercise_from_url():
     EXAMPLE_DELIMITER = "# Lesson Example"
     DEFAULT_PAGE_TITLE = "reStructuredText Live Editor"
 
-    if exercise_id:
-        file_path = f"/l/{exercise_id}.rst"
+    if lesson_id:
+        file_path = f"/l/{lesson_id}.rst"
         full_rst_content = await load_text_file(file_path)
         
         chapter_title_from_meta = None
@@ -113,12 +113,12 @@ async def load_exercise_from_url():
             else:
                 next_button_element.style.display = "none"
 
-        # Process exercise content
-        exercise_rst_part = ""
+        # Process lesson content
+        lesson_rst_part = ""
         example_rst_part = ""
 
         if full_rst_content.startswith("Error:"):
-            exercise_div.innerHTML = f"<p style='color: red;'>{full_rst_content}</p>"
+            lesson_div.innerHTML = f"<p style='color: red;'>{full_rst_content}</p>"
             rst_input_element.value = ""
             rst_output_div.innerHTML = ""
             # Ensure button is hidden on error too
@@ -128,19 +128,19 @@ async def load_exercise_from_url():
         else:
             if EXAMPLE_DELIMITER in full_rst_content:
                 parts = full_rst_content.split(EXAMPLE_DELIMITER, 1)
-                exercise_rst_part = parts[0].strip() # Comments like .. _Chapter will be ignored by render_rst
+                lesson_rst_part = parts[0].strip() # Comments like .. _Chapter will be ignored by render_rst
                 if len(parts) > 1:
                     example_rst_part = parts[1].strip()
             else:
-                exercise_rst_part = full_rst_content.strip()
+                lesson_rst_part = full_rst_content.strip()
             
-            exercise_div.innerHTML = render_rst(exercise_rst_part)
+            lesson_div.innerHTML = render_rst(lesson_rst_part)
             rst_input_element.value = example_rst_part
             render_rst_on_input() 
             
-    else: # No exercise_id in URL
+    else: # No lesson_id in URL
         # Reset to default state
-        exercise_div.innerHTML = "<p>Select a lesson or start typing reStructuredText in the input area.</p>"
+        lesson_div.innerHTML = "<p>Select a lesson or start typing reStructuredText in the input area.</p>"
         rst_input_element.value = ""
         rst_output_div.innerHTML = ""
         if page_main_title_element:
@@ -160,7 +160,7 @@ async def load_exercise_from_url():
 
 async def main_app_setup():
     """Main function to run on script load to set up the application."""
-    await load_exercise_from_url()
+    await load_lesson_from_url()
     # Other initial setup tasks can be added here in the future.
 
 # Call the main setup function. PyScript will handle running this async function.
