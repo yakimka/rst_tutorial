@@ -1,8 +1,11 @@
 import io
-import js  # To access URL parameters
-import re # For regular expression matching
-from pyscript import document, fetch
+import re  # For regular expression matching
+
 from docutils.core import publish_parts
+from pyscript import document, fetch
+
+import js  # To access URL parameters
+
 
 def render_rst_on_input(event=None):
     """
@@ -24,23 +27,24 @@ def render_rst(rst: str) -> str:
     if not rst.strip():
         return ""
 
-    error_stream = io.StringIO() # To catch any stray messages
+    error_stream = io.StringIO()  # To catch any stray messages
     settings_overrides = {
-        'warning_stream': error_stream,  # Redirects some messages
+        "warning_stream": error_stream,  # Redirects some messages
         # 'report_level': 5,  # Report WARNING_LEVEL (1) and above
         # 'halt_level': 5,  # Do not halt on any reported message (NONE_LEVEL is 5)
-        'traceback': True  # Do not include Python tracebacks in docutils messages
+        "traceback": True,  # Do not include Python tracebacks in docutils messages
     }
     try:
         parts = publish_parts(
-            source=rst,
-            writer_name='html5',
-            settings_overrides=settings_overrides
+            source=rst, writer_name="html5", settings_overrides=settings_overrides
         )
     except Exception as e:
-        return f"<pre style='color: red;'>Error rendering reStructuredText:\n{str(e)}</pre>"
+        return (
+            "<pre style='color: red;'>"
+            f"Error rendering reStructuredText:\n{str(e)}</pre>"
+        )
 
-    return parts['html_body']
+    return parts["html_body"]
 
 
 async def load_text_file(url_path: str) -> str:
@@ -72,17 +76,16 @@ async def load_lesson_from_url():
     next_button_element = document.querySelector("#next-lesson-button")
     page_loader_element = document.querySelector("#page-loader")
     # Also get direct references to the main content containers to show them
-    body_header_element = document.querySelector("body > header") # Updated selector
+    body_header_element = document.querySelector("body > header")  # Updated selector
     body_container_element = document.querySelector("body > div.container")
 
-
-    EXAMPLE_DELIMITER = "# Lesson Example"
-    DEFAULT_PAGE_TITLE = "reStructuredText Live Editor"
+    example_delimiter = "# Lesson Example"
+    default_page_title = "reStructuredText Live Editor"
 
     if lesson_id:
         file_path = f"/l/{lesson_id}.rst"
         full_rst_content = await load_text_file(file_path)
-        
+
         chapter_title_from_meta = None
         next_lesson_id_from_meta = None
 
@@ -98,13 +101,17 @@ async def load_lesson_from_url():
             next_match = next_pattern.search(full_rst_content)
             if next_match:
                 extracted_next_id = next_match.group(1).strip()
-                if extracted_next_id: # Ensure it's not empty after stripping
+                if extracted_next_id:  # Ensure it's not empty after stripping
                     next_lesson_id_from_meta = extracted_next_id
-        
+
         # Update page title
         if page_main_title_element:
-            page_main_title_element.textContent = chapter_title_from_meta if chapter_title_from_meta else DEFAULT_PAGE_TITLE
-        
+            page_main_title_element.textContent = (
+                chapter_title_from_meta
+                if chapter_title_from_meta
+                else default_page_title
+            )
+
         # Update Next button
         if next_button_element:
             if next_lesson_id_from_meta:
@@ -122,38 +129,44 @@ async def load_lesson_from_url():
             rst_input_element.value = ""
             rst_output_div.innerHTML = ""
             # Ensure button is hidden on error too
-            if next_button_element: next_button_element.style.display = "none"
-            if page_main_title_element: page_main_title_element.textContent = DEFAULT_PAGE_TITLE
+            if next_button_element:
+                next_button_element.style.display = "none"
+            if page_main_title_element:
+                page_main_title_element.textContent = default_page_title
 
         else:
-            if EXAMPLE_DELIMITER in full_rst_content:
-                parts = full_rst_content.split(EXAMPLE_DELIMITER, 1)
-                lesson_rst_part = parts[0].strip() # Comments like .. _Chapter will be ignored by render_rst
+            if example_delimiter in full_rst_content:
+                parts = full_rst_content.split(example_delimiter, 1)
+                lesson_rst_part = parts[
+                    0
+                ].strip()  # Comments like .. _Chapter will be ignored by render_rst
                 if len(parts) > 1:
                     example_rst_part = parts[1].strip()
             else:
                 lesson_rst_part = full_rst_content.strip()
-            
+
             lesson_div.innerHTML = render_rst(lesson_rst_part)
             rst_input_element.value = example_rst_part
-            render_rst_on_input() 
-            
-    else: # No lesson_id in URL
+            render_rst_on_input()
+
+    else:  # No lesson_id in URL
         # Reset to default state
-        lesson_div.innerHTML = "<p>Select a lesson or start typing reStructuredText in the input area.</p>"
+        lesson_div.innerHTML = (
+            "<p>Select a lesson or start typing reStructuredText in the input area.</p>"
+        )
         rst_input_element.value = ""
         rst_output_div.innerHTML = ""
         if page_main_title_element:
-            page_main_title_element.textContent = DEFAULT_PAGE_TITLE
+            page_main_title_element.textContent = default_page_title
         if next_button_element:
             next_button_element.style.display = "none"
         pass
-    
+
     # Hide loader and show content, regardless of outcome
     if page_loader_element:
         page_loader_element.style.display = "none"
-    if body_header_element: # Updated variable name
-        body_header_element.style.display = "flex" # header is now a flex container
+    if body_header_element:  # Updated variable name
+        body_header_element.style.display = "flex"  # header is now a flex container
     if body_container_element:
         body_container_element.style.display = "flex"
 
@@ -162,6 +175,7 @@ async def main_app_setup():
     """Main function to run on script load to set up the application."""
     await load_lesson_from_url()
     # Other initial setup tasks can be added here in the future.
+
 
 # Call the main setup function. PyScript will handle running this async function.
 main_app_setup()

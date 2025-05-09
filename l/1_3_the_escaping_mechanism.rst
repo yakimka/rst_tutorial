@@ -25,7 +25,7 @@ For example:
 
 *   If you write ``\*this\*``, it will appear as \*this\* (with literal asterisks)
     instead of *this* (emphasized).
-*   If you write `\``this`\``, it will appear as \`this\` (with literal backticks)
+*   If you write \\`\\`this\\`\\`, it will appear as \`\`this\`\` (with literal backticks)
     instead of ``this`` (inline literal).
 
 Displaying a Literal Backslash

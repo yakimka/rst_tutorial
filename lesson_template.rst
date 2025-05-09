@@ -96,4 +96,3 @@ This is a paragraph under a subsection.
    You can also include more complex examples.
    Make sure this part is valid reStructuredText or intentionally contains
    elements the student needs to work with or correct.
-
