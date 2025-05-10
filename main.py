@@ -215,6 +215,9 @@ def go_to_main_page() -> None:
 
 def get_current_lesson_id() -> str:
     url = js.URL.new(window.location.href)
+    last_path_segment = url.pathname.split("/")[-1]
+    if last_path_segment.startswith("playground"):
+        return "playground"
     return url.searchParams.get("id") or ""
 
 
@@ -277,9 +280,14 @@ async def on_history_change(event):
 
 
 async def main_app_setup():
-    proxy = ffi.create_proxy(on_history_change)
-    window.addEventListener("popstate", proxy)
     if lesson_id := get_current_lesson_id():
+        if lesson_id == "playground":
+            render_rst_on_input()
+            hide_main_loader()
+            return
+
+        proxy = ffi.create_proxy(on_history_change)
+        window.addEventListener("popstate", proxy)
         await set_current_lesson(lesson_id, push_to_history=False)
         hide_main_loader()
         return
