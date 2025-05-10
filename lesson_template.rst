@@ -46,6 +46,13 @@ Include any necessary theory, syntax explanations, and examples directly within 
 section if they are part of the core lesson material the student needs to read and
 understand *before* attempting the interactive example.)
 
+References
+----------
+
+- list of references to the official reStructuredText documentation
+  (e.g., `Inline Markup <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup>`_)
+  and any other relevant sections that support the lesson content.
+
 **Your Task:**
 
 (Clearly state what the student is expected to do.
