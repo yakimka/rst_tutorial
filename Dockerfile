@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./js ./js
 COPY ./css ./css
 COPY ./l ./l
+COPY ./img ./img
 COPY index.html lesson.html playground.html pyscript.toml main.py ./
 
 RUN echo "#!/bin/sh" > /run.sh && \
