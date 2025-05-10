@@ -3,129 +3,78 @@
 ..
    _Next: 2_6_recognition_order_for_inline_markup
 
-==============================================
+===============================================
 Lesson 2.5: Inline Markup Recognition Rules
-==============================================
+===============================================
 
-You've learned about emphasis (``*text*``), strong emphasis (``**text**``), and
-inline literals (````text````). These constructs use special characters (asterisks
-and backticks) to define their boundaries. However, these characters are also
-common in everyday text (e.g., for multiplication, pointers, or as part of
-code).
+In reStructuredText, inline markup constructs like *emphasis*, **strong emphasis**,
+and ``inline literals`` use special characters (\* and \`).
+To avoid confusing these with ordinary text (multiplication signs, pointers, code ticks),
+reST applies precise rules to decide when to interpret these sequences as markup.
 
-To avoid ambiguity, reStructuredText has a precise set of **inline markup
-recognition rules**. These rules determine when a sequence of characters is
-treated as markup and when it's treated as literal text.
+Core Rules
+----------
 
-Core Recognition Rules:
+1. **Adjacency at start**: The opening marker ("*", "**", or "``") must be followed immediately
+   by a non-whitespace character (e.g., ``*word``, not ``* word``).
+2. **Adjacency at end**: The closing marker must be preceded immediately by a non-whitespace character
+   (e.g., ``word*``, not ``word *``).
+3. **Non-empty content**: There must be at least one character between the opening and closing
+   markers (so ``**`` alone is not valid strong emphasis).
+4. **No escaping**: The marker must not be preceded by an unescaped backslash (``\``).
+   (Inline literals are an exception: their closing backticks can be escaped.)
+5. **Punctuation context**: If the opening marker is preceded by an opening punctuation
+   character (one of ``(``, ``[``, ``{``, ``<``, ``'``, ``"``),
+   it must not be followed by the matching closing punctuation (so ``(*text*)``
+   works but ``(*)`` does not count as emphasis).
 
-Inline markup start-strings (like ``*``, ``**``, or :literal:\`\`) and end-strings are
-generally recognized if:
+Surrounding Context (Default)
+-----------------------------
 
-1.  **Start-string Adjacency:** The start-string is immediately followed by
-    non-whitespace. (e.g., ``*word``, not ``* word``)
-2.  **End-string Adjacency:** The end-string is immediately preceded by
-    non-whitespace. (e.g., ``word*``, not ``word *``)
-3.  **Non-empty Content:** The end-string is separated by at least one character
-    from the start-string. (e.g., ``**`` is not strong emphasis)
-4.  **No Escaping (Usually):** Neither the start-string nor the end-string is
-    preceded by an unescaped backslash (``\``). (The end-string of inline
-    literals is an exception to this part of the rule regarding backslashes).
-5.  **Context with Punctuation:** If a start-string is immediately preceded by
-    an opening punctuation character (like ``(``, ``[``, ``{``, ``<``, ``'``, ``"``),
-    it must not be immediately followed by the corresponding closing punctuation.
-    (e.g., ``(*text*)`` is fine, but ``(*)`` would not be emphasis).
+By default (unless you enable character-level inline markup), additional restrictions apply
+to what can appear around the markers:
 
-Additional Rules (Default Behavior):
+- **Before opening marker**: start of line, whitespace, or one of ``- : / ' " < ( [ {``.
+- **After closing marker**: end of line, whitespace, or one of ``- . , : ; ! ? \ / ' " ) ] } >``.
 
-By default (when
-`character-level inline markup <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#character-level-inline-markup>`_
-is not enabled), there are
-stricter rules about the characters surrounding the markup:
+These prevent applying emphasis in the middle of words without explicit enabling of
+character-level inline markup.
 
-6.  **Preceding Context:** The start-string must either start a text block or be
-    immediately preceded by whitespace or one of the characters:
-    ``- : / ' " < ( [ {``.
-7.  **Following Context:** The end-string must either end a text block or be
-    immediately followed by whitespace or one of the characters:
-    ``- . , : ; ! ? \ / ' " ) ] } >``.
+Character-Level Inline Markup
+-----------------------------
 
-These rules (6 and 7) mean that, by default, you cannot easily apply inline
-markup to parts of words without using `character-level inline markup`_ techniques.
-For example, ``em*pha*sis`` would not typically work to emphasize "pha".
+Enabling `character-level inline markup` in configuration relaxes the surrounding context rules above,
+allowing emphasis inside words (e.g., ``em*pha*sis``).
+However, this can lead to accidental markup if your text contains stray markers.
 
-Character-Level Inline Markup:
+Escaping Markup Characters
+--------------------------
 
-reStructuredText allows for
-`character-level inline markup <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#character-level-inline-markup>`_
-using backslash-escapes to separate the markup from adjacent text if needed (e.g., ``*word*\s``).
-This can be useful but is often less readable in the raw text.
-There's also a configuration setting
-(`character_level_inline_markup <https://docutils.sourceforge.io/docs/user/config.html#character-level-inline-markup>`_)
-that can relax rules 6 and 7, making it easier to mark up parts of words but potentially
-leading to more false positives if not careful.
+Use a backslash (``\*`` or ``\````) to treat markup characters literally. For example:
 
-Understanding these rules helps you predict how your text will be rendered and
-how to use escaping (``\``) when you need to use markup characters literally.
+- Write ``5*3=15`` to show "5*3=15".
+- Write ``He said \`\`hello\`\` to her.`` to show double backticks literally.
 
-For a comprehensive explanation, refer to the official documentation on
-`Inline markup recognition rules <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules>`_
-and `Character-Level Inline Markup <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#character-level-inline-markup>`_.
+References
+----------
 
-**Your Task:**
-
-The editor below contains various examples. Your goal is to observe how the inline
-markup recognition rules apply and to experiment with them.
-
-1.  **Observe Existing Examples:**
-
-    * Examine the pre-filled text in the interactive section.
-    * Identify which instances of ``*text*``, ``**text**``, or ````text````
-      are correctly rendered as emphasis, strong emphasis, or literals.
-    * Identify which of these are not.
-    * Try to explain *why* some are not rendered as markup, based on the
-      rules above.
-2.  **Test the Rules:**
-
-    * Modify some of the "incorrect" examples to make them valid markup.
-    * For instance, if ``* text *`` doesn't work, change it to ``*text*``.
-    * Try to apply emphasis to only part of a word, like making "pha"
-      italic in "emphasis".
-    * See if it works by default.
-    * Then, try to make it work using a backslash escape (e.g.,
-      ``em\*pha*\sis`` - this might be tricky and is just for
-      experimentation with the concept).
-3.  **Experiment with Escaping:**
-
-    * In a sentence like "The result is 5*3=15.", ensure the asterisk is
-      treated literally and not as emphasis.
-    * If it's being misinterpreted, use a backslash (``\*``) to escape it.
-    * Try to write a sentence that includes literal double backticks, e.g.,
-      ``He said ````hello```` to her.``
-    * You might need to think about how inline literals are defined.
+- `Inline markup recognition rules <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules>`_
+- `Character-Level Inline Markup <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#character-level-inline-markup>`_
 
 # Lesson Example
+
+Below are examples. Edit them to see how the rules apply in practice.
 
 This is *correctly emphasized text*.
 This is **correctly strong text**.
 This is ``correctly literal text``.
-
-However, * this is not emphasized* due to leading/trailing spaces.
-And *this is also not * emphasized.
-What about *this*one? (Rule 7: no following whitespace/punctuation)
-Or this*one*? (Rule 6: no preceding whitespace/punctuation)
 
 The expression (a*b) + c should show literal asterisks.
 The file is named report.*.txt.
 Is this * a single asterisk? Or this one*?
 
 Consider the C code: char* ptr = NULL;
+
 And a Python docstring: """This is a ````docstring````."""
 
-Can you make *part*ofaword* emphasized?
-Try to write a literal asterisk: \*.
-What about a literal backslash before an asterisk: \\\*?
-
-The function call is ``my_func(*args, **kwargs)``.
-He said (``hello``) to her.
-This should be ``literal with *asterisks* inside``.
+Can you make *part*ofaword* emphasized?  (tries inline without enabling character-level)
