@@ -3,14 +3,49 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Interactive reStructuredText Tutorial</title>
+    <title>reStructuredText Playground</title>
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
     <link rel="stylesheet" href="./css/minimal.css">
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="css/pico.classless.cyan.min.css">
+    <link rel="stylesheet" href="css/pico.fluid.classless.cyan.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <!--    <link rel="stylesheet" href="./css/plain.css">-->
-    <!--    <link rel="stylesheet" href="./css/responsive.css">-->
+    <style>
+        .playground-main-container {
+            display: flex;
+            flex-direction: row; /* Arrange panels side-by-side */
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .panel {
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #rst-input-container, #rst-output-container {
+            flex: 1; /* Distribute space equally or as per Split.js */
+            min-height: 100px; /* Ensure panels have a minimum height */
+        }
+        #rst-input {
+            width: 100%;
+            flex-grow: 1;
+            box-sizing: border-box;
+            font-family: monospace;
+            font-size: 1em;
+            border: 1px solid var(--pico-muted-border-color);
+            margin-bottom: 0;
+            resize: none;
+        }
+        #rst-output {
+            border: 1px solid var(--pico-muted-border-color);
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 5px;
+            box-sizing: border-box;
+            min-height: 50px; /* Ensure output div has some height */
+        }
+    </style>
     <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
     <script src="./js/split.min.js"></script>
     <script src="./js/indent-textarea.4.0.0.js"></script>
@@ -18,38 +53,25 @@
 <body>
 <div id="page-loader">
     <div class="loader-spinner"></div>
-    <p>Loading Lesson...</p>
+    <p>Loading...</p>
 </div>
 <header>
-    <h4 id="page-main-title">Interactive reStructuredText Tutorial</h4>
+    <h1 id="page-main-title">reStructuredText Playground</h1>
     <a href="#" id="theme_switcher"></a>
 </header>
-<div class="container">
-    <div class="panel" id="lesson-panel">
-        <div id="lesson-content-area">
-            <!-- Placeholder for lesson text -->
-            <p>The lesson description will appear here.</p>
-        </div>
-        <div id="lesson-footer">
-            <a href="/" id="toc-button" role="button">&laquo; Table of Contents</a>
-        </div>
+<main class="playground-main-container">
+    <div class="panel" id="rst-input-container">
+        <textarea id="rst-input" py-input="render_rst_on_input" placeholder="Type reStructuredText here..."></textarea>
     </div>
-    <div class="editor-column">
-        <div class="panel" id="rst-input-area">
-            <textarea id="rst-input" py-input="render_rst_on_input"
-                      placeholder="Type reStructuredText here..."></textarea>
-        </div>
-        <div class="panel" id="rst-output-area">
-            <div id="rst-output" style="flex-grow: 1;"></div>
-            <div id="output-footer">
-                <button data-next-lesson-id="" id="next-lesson-button" role="button"
-                        py-click="handle_next_lesson_click" style="display: none;">Next
-                    Lesson &raquo;
-                </button>
-            </div>
-        </div>
+    <div class="panel" id="rst-output-container">
+        <div id="rst-output"></div>
     </div>
-</div>
+</main>
+<footer>
+  <small>
+    Project source code available on <a href="https://github.com/yakimka/rst_tutorial" target="_blank">GitHub</a>.
+  </small>
+</footer>
 <script type="py" src="./main.py" config="./pyscript.toml"></script>
 <script>
     const textarea = document.querySelector('#rst-input'); // Use a more specific selector if possible
@@ -62,26 +84,12 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        Split(['#lesson-panel', '.editor-column'], {
-            sizes: [40, 60], // Initial sizes in percentage
-            minSize: [250, 350], // Minimum sizes in pixels for lesson-panel and editor-column respectively
+        Split(['#rst-input-container', '#rst-output-container'], {
+            direction: 'horizontal', // Change direction to horizontal
+            sizes: [50, 50], // Initial sizes in percentage for input and output panels
+            minSize: [200, 200], // Minimum width for input and output areas
             gutterSize: 8,   // Size of the draggable gutter in pixels
-            cursor: 'col-resize',
-            // The following elementStyle and gutterStyle are recommended for flexbox layouts
-            elementStyle: (dimension, size, gutterSize) => ({
-                'flex-basis': `calc(${size}% - ${gutterSize}px)`,
-            }),
-            gutterStyle: (dimension, gutterSize) => ({
-                'flex-basis': `${gutterSize}px`,
-            }),
-        });
-
-        Split(['#rst-input-area', '#rst-output-area'], {
-            direction: 'vertical',
-            sizes: [50, 50], // Initial sizes for input and output areas
-            minSize: [100, 100], // Minimum height for input and output areas
-            gutterSize: 8,    // Size of the draggable gutter
-            cursor: 'row-resize',
+            cursor: 'col-resize', // Change cursor for horizontal split
             elementStyle: (dimension, size, gutterSize) => ({
                 'flex-basis': `calc(${size}% - ${gutterSize}px)`,
             }),

@@ -2,6 +2,7 @@ import asyncio
 import io
 import logging
 import re
+from textwrap import dedent
 from typing import NamedTuple
 
 from docutils.core import publish_parts
@@ -12,6 +13,7 @@ import js
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger("lesson_page")
 
+_current_lesson_id = ""
 _preloaded_lesson_cache: dict[str, "Lesson"] = {}
 
 
@@ -41,6 +43,7 @@ def render_rst(rst: str) -> str:
 
 
 class Lesson(NamedTuple):
+    id: str
     main_chapter: str
     description: str
     interactive: str
@@ -51,7 +54,7 @@ _chapter_pattern = re.compile(r"^\.\.\s*\n\s*_Chapter:\s*(.*)", re.MULTILINE)
 _next_pattern = re.compile(r"^\.\.\s*\n\s*_Next:\s*(.*)", re.MULTILINE)
 
 
-def parse_lesson(rst: str) -> Lesson | None:
+def parse_lesson(rst: str, lesson_id: str) -> Lesson | None:
     if not rst:
         return None
     example_delimiter = "# Lesson Example"
@@ -66,10 +69,16 @@ def parse_lesson(rst: str) -> Lesson | None:
             next_lesson_id_from_meta = extracted_next_id
 
     parts = rst.split(example_delimiter, 1)
+    description, interactive = parts[0].strip(), parts[1].strip()
+    if interactive.startswith(".. code-block::"):
+        # thi is hack for linters, we need to remove the first line and dedent the rest
+        interactive = dedent(interactive.split("\n", 1)[1])
+
     return Lesson(
+        id=lesson_id,
         main_chapter=chapter_title_from_meta,
-        description=parts[0].strip(),
-        interactive=parts[1].strip(),
+        description=description,
+        interactive=interactive,
         next_lesson_id=next_lesson_id_from_meta,
     )
 
@@ -105,7 +114,7 @@ async def fetch_and_parse_lesson(lesson_id: str) -> tuple[Lesson | None, str]:
             return None, "not_found"
         else:
             return None, "network"
-    lesson = parse_lesson(full_rst_content)
+    lesson = parse_lesson(full_rst_content, lesson_id)
     if lesson is None:
         return None, "invalid_lesson"
     return lesson, ""
@@ -128,6 +137,9 @@ async def preload_lesson(lesson_id: str) -> None:
 
 
 async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
+    global _current_lesson_id
+    _current_lesson_id = lesson_id
+
     if push_to_history:
         set_load_lesson_loader()
 
@@ -136,6 +148,8 @@ async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
         logger.info("Using preloaded lesson: %s", lesson_id)
     else:
         lesson, err = await fetch_and_parse_lesson(lesson_id)
+        if push_to_history:
+            set_lesson_id_in_url(lesson_id)
         if err:
             display_error(is404=err == "not_found")
             return
@@ -173,6 +187,11 @@ def display_lesson(lesson: Lesson) -> None:
     else:
         next_button_element.style.display = "none"
 
+    lesson_div.scrollTop = 0
+    rst_input_element.scrollTop = 0
+    output_element = document.querySelector("#rst-output")
+    output_element.scrollTop = 0
+
 
 def display_error(is404: bool = False) -> None:
     lesson_div = document.querySelector("#lesson-content-area")
@@ -196,6 +215,9 @@ def go_to_main_page() -> None:
 
 def get_current_lesson_id() -> str:
     url = js.URL.new(window.location.href)
+    last_path_segment = url.pathname.split("/")[-1]
+    if last_path_segment.startswith("playground"):
+        return "playground"
     return url.searchParams.get("id") or ""
 
 
@@ -250,7 +272,7 @@ async def handle_next_lesson_click(event) -> None:
 
 async def on_history_change(event):
     lesson_id = get_current_lesson_id()
-    if lesson_id:
+    if lesson_id and lesson_id != _current_lesson_id:
         await set_current_lesson(lesson_id, push_to_history=False)
 
 
@@ -258,9 +280,14 @@ async def on_history_change(event):
 
 
 async def main_app_setup():
-    proxy = ffi.create_proxy(on_history_change)
-    window.addEventListener("popstate", proxy)
     if lesson_id := get_current_lesson_id():
+        if lesson_id == "playground":
+            render_rst_on_input()
+            hide_main_loader()
+            return
+
+        proxy = ffi.create_proxy(on_history_change)
+        window.addEventListener("popstate", proxy)
         await set_current_lesson(lesson_id, push_to_history=False)
         hide_main_loader()
         return

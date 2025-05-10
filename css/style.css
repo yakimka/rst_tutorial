@@ -175,11 +175,6 @@ header .dropdown summary {
     }
 }
 
-/* Initially hide content until loader is done */
-body > header, body > .container { /* Updated selector */
-    display: none;
-}
-
 /* Styles for Split.js gutters */
 .gutter {
     background-color: var(--pico-muted-border-color);
@@ -195,4 +190,9 @@ body > header, body > .container { /* Updated selector */
 .gutter.gutter-vertical {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
     cursor: row-resize;
+}
+
+/* Nice tables */
+td, th {
+    border: thin solid var(--pico-muted-border-color) !important;
 }

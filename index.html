@@ -3,15 +3,98 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Interactive reStructuredText Lessons</title>
+    <title>Interactive reStructuredText Tutorial</title>
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/pico.classless.cyan.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/minimal.css">
-    <link rel="stylesheet" href="./css/responsive.css">
 </head>
 <body>
-    <h1>Interactive reStructuredText Lessons</h1>
+<header>
+    <h1 id="page-main-title">Interactive reStructuredText Tutorial</h1>
     <a href="#" id="theme_switcher"></a>
+</header>
+<main>
+  <section id="project-description" aria-labelledby="project-description-heading">
+    <h2 id="project-description-heading">Welcome to the Interactive reStructuredText Tutorial!</h2>
+    <p>
+      This project provides a hands-on learning experience for reStructuredText (reST),
+      an easy-to-read, what-you-see-is-what-you-get plaintext markup syntax and parser system.
+      reStructuredText is commonly used for technical documentation, including Python's official
+      documentation, and is a core component of the <a href="https://docutils.sourceforge.io/" target="_blank">Docutils</a> project.
+    </p>
+    <p>
+      Through these interactive lessons, you'll learn the fundamentals and more advanced
+      features of reStructuredText, enabling you to write clear, well-structured documents.
+      Each lesson includes an interactive editor where you can practice the concepts immediately.
+    </p>
+    <h3>Official Docutils Documentation</h3>
+    <p>
+      For more comprehensive information, refer to the official Docutils and reStructuredText documentation:
+    </p>
+    <ul>
+      <li><a href="https://docutils.sourceforge.io/" target="_blank">Docutils Project Home</a></li>
+      <li><a href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html" target="_blank">reStructuredText Markup Specification</a></li>
+      <li><a href="https://docutils.sourceforge.io/docs/ref/rst/directives.html" target="_blank">reStructuredText Directives</a></li>
+      <li><a href="https://docutils.sourceforge.io/docs/ref/rst/roles.html" target="_blank">reStructuredText Interpreted Text Roles</a></li>
+    </ul>
+    <h3>Tools</h3>
+    <ul>
+      <li><a href="/playground">reStructuredText Playground</a> - Experiment with reST syntax live in your browser.</li>
+    </ul>
+  </section>
+  <hr>
+  <div id="toc" aria-labelledby="toc-heading">
+    <h2 id="toc-heading">Table of Contents</h2>
+    <ul>
+      <li>
+        <h3>1. Introduction to reStructuredText</h3>
+        <ul>
+          <li><a href="/lesson?id=1_1_what_is_restructured_text">1.1. What is reStructuredText?</a></li>
+          <li><a href="/lesson?id=1_2_basic_syntax">1.2. Basic Syntax: Paragraphs, Indentation, and Escaping</a></li>
+        </ul>
+      </li>
+      <li>
+        <h3>2. Inline Markup</h3>
+        <ul>
+          <li><a href="/lesson?id=2_1_emphasis_and_strong_emphasis">2.1. Emphasis (*text*) and Strong Emphasis (**text**)</a></li>
+          <li><a href="/lesson?id=2_2_inline_literals">2.2. Inline Literals (``text``)</a></li>
+          <li><a href="/lesson?id=2_3_inline_markup_recognition_rules_and_order">2.3. Recognition Rules, Order & Character-Level Markup</a></li>
+          <li><a href="/lesson?id=2_4_escaping_markup_characters">2.4. Escaping Markup Characters</a></li>
+        </ul>
+      </li>
+      <li>
+        <h3>3. Lists and Blocks</h3>
+        <ul>
+          <li><a href="/lesson?id=3_1_bulleted_and_enumerated_lists">3.1. Bulleted and Enumerated Lists</a></li>
+          <li><a href="/lesson?id=3_2_definition_field_and_option_lists">3.2. Definition, Field, and Option Lists</a></li>
+          <li><a href="/lesson?id=3_3_literal_line_and_doctest_blocks">3.3. Literal, Line, and Doctest Blocks</a></li>
+        </ul>
+      </li>
+      <li>
+        <h3>4. Document Structure</h3>
+        <ul>
+          <li><a href="/lesson?id=4_1_sections_titles_and_transitions">4.1. Sections, Titles, and Transitions</a></li>
+          <li><a href="/lesson?id=4_2_hyperlinks_external_internal_anonymous">4.2. Hyperlinks: External, Internal, Anonymous</a></li>
+          <li><a href="/lesson?id=4_3_footnotes_and_citations">4.3. Footnotes and Citations</a></li>
+        </ul>
+      </li>
+      <li>
+        <h3>5. Multimedia</h3>
+        <ul>
+          <li><a href="/lesson?id=5_1_images_and_figures">5.1. Images and Figures</a></li>
+          <li><a href="/lesson?id=5_2_tables_grid_simple_csv_list">5.2. Tables: Grid, Simple, CSV-Table, List-Table</a></li>
+        </ul>
+      </li>
+      <!-- Chapters 6, 7, and 8 are omitted as their lesson files do not exist yet -->
+    </ul>
+  </div>
+</main>
+<footer>
+  <small>
+    Source code on <a href="https://github.com/yakimka/rst_tutorial" target="_blank">GitHub</a>.
+  </small>
+</footer>
 <script>
     // Theme switcher code https://github.com/RWDevelopment/theme_switch
     const html = document.documentElement
