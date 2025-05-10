@@ -175,11 +175,6 @@ header .dropdown summary {
     }
 }
 
-/* Initially hide content until loader is done */
-body > header, body > .container { /* Updated selector */
-    display: none;
-}
-
 /* Styles for Split.js gutters */
 .gutter {
     background-color: var(--pico-muted-border-color);
