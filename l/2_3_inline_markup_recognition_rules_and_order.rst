@@ -79,25 +79,27 @@ References:
 
 **Your Task:**
 
-1.  **Examine the Examples**: Look at the text in the interactive section.
-    Try to predict how each line will be rendered based on the rules and order described above.
-    Pay attention to spacing and surrounding characters.
-2.  **Test the Rules**:
+1.  **Predict Rendering**: Examine each line in the interactive section.
+    Based on the rules and order discussed, predict how reStructuredText will render it.
+2.  **Test Adjacency & Context Rules**:
 
-    *   Modify "This is *correctly emphasized text*." by adding a space after the
-        opening asterisk (e.g., ``* correctly...``). What happens?
-    *   In "The file is named report.*.txt.", try to make ``*`` emphasized. What do you
-        need to do if the default rules prevent it? (Hint: escaping might be needed,
-        or this might illustrate a case where it's hard without character-level markup).
+    *   In the "Rule Testing: Adjacency & Context" part of the example:
+
+        *   Why do the lines under "Invalid due to spacing" (e.g., ``Try: * spaced emphasis *``)
+            fail to produce the intended markup? Correct one of them by removing the internal spaces.
+        *   Why aren't the asterisks in ``report.*.txt`` treated as markup?
+        *   In the "Experiment Zone", try to make the ``*`` in ``report.*.txt`` emphasized.
+            (Hint: you might need to use escaping)
 3.  **Test Recognition Order**:
 
-    *   How does ``***triple asterisks***`` render? Try to make it ``**bold**`` around ``*italic*``
-        and then ``*italic*`` around ``**bold**``.
-    *   What happens if you write `````` ````NotALink`_```` ``````? Is it a literal or a hyperlink?
-        How can you force it to be one or the other if the default isn't what you want?
-4.  **Experiment**: Try creating your own examples that test the boundaries of these rules.
-    For example, can you create a situation where an intended inline literal is
-    misinterpreted as a hyperlink or interpreted text?
+    *   In the "Recognition Order Testing" part:
+
+        *   How is ``***bold***`` and  ``**``not code``**`` rendered?
+4.  **Use the Experiment Zone**:
+
+    *   Add your own examples to test other rules. For instance, try ``(*text*)`` versus ``(*)``.
+    *   Can you create a situation where ``word*`` (an asterisk directly after a word without
+        following whitespace) is *not* markup, and then make it markup?
 
 .. _emphasis: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#emphasis
 .. _strong emphasis: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#strong-emphasis
@@ -111,39 +113,35 @@ References:
 
 # Lesson Example
 
-This is *correctly emphasized text*.
-This is **correctly strong text**.
-This is ````correctly literal text````.
+--- Rule Testing: Adjacency & Context ---
 
-The expression (a*b) + c should show literal asterisks.
-The file is named report.*.txt.
-Is this * a single asterisk?
+Valid examples:
 
-Consider the C code: char* ptr = NULL;
-And a Python docstring: """This is a ````docstring````."""
+- This is *emphasized*.
+- This is **strong**.
+- This is ````literal````.
 
---- Recognition Order Examples ---
+Invalid due to spacing (Rule 1 & 2 - non-whitespace adjacency):
 
-This is ``***triple asterisks***``.
+- Try: * spaced emphasis *
+- Try: ** spaced strong **
+- Try: `` spaced literal ``
 
-This is ``` `a phrase link`_ ```.
-This is ````a literal with backquotes````.
-This is also ```an interpreted text```. (Uses the default role)
+Default surrounding character restrictions:
 
-What about `literal_with_underscore`_?
-And ````literal_with_underscore_````?
+- Filename: report.*.txt (Is ``*`` emphasized here?)
+- Math: 2*3=6 (Is ``*`` emphasized?)
+- Thisis*not*emphasis. (Markup in middle of word)
 
-A footnote [1]_ and a link_ use trailing underscores.
+--- Recognition Order Testing ---
 
-A substitution |subst| and a linked substitution |subst_link|_.
+- This is ***bold***.
+- This is **``not code``**
 
-A standalone link: https://docutils.sourceforge.io/
-An email: user@example.com
+--- Experiment Zone ---
 
-.. _a phrase link: https://example.com/phrase
-.. _literal_with_underscore: https://example.com/target1
-.. [1] This is a footnote.
-.. _link: https://docutils.sourceforge.io/
-.. |subst| replace:: example text
-.. |subst_link| replace:: linked example
-.. _subst_link: https://example.com/subst_target
+Add your own tests below.
+For example:
+
+- Try to make part of "report.*.txt" italic using escaping.
+- Test word* (no space after asterisk).
