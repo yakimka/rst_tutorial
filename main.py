@@ -2,6 +2,7 @@ import asyncio
 import io
 import logging
 import re
+from textwrap import dedent
 from typing import NamedTuple
 
 from docutils.core import publish_parts
@@ -66,10 +67,15 @@ def parse_lesson(rst: str) -> Lesson | None:
             next_lesson_id_from_meta = extracted_next_id
 
     parts = rst.split(example_delimiter, 1)
+    description, interactive = parts[0].strip(), parts[1].strip()
+    if interactive.startswith(".. code-block::"):
+        # thi is hack for linters, we need to remove the first line and dedent the rest
+        interactive = dedent(interactive.split("\n", 1)[1])
+
     return Lesson(
         main_chapter=chapter_title_from_meta,
-        description=parts[0].strip(),
-        interactive=parts[1].strip(),
+        description=description,
+        interactive=interactive,
         next_lesson_id=next_lesson_id_from_meta,
     )
 
