@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./js ./js
 COPY ./css ./css
 COPY ./l ./l
-COPY lesson.html index.html pyscript.toml main.py ./
+COPY index.html lesson.html playground.html pyscript.toml main.py ./
 
 RUN echo "#!/bin/sh" > /run.sh && \
     echo "mkdir -p /public" >> /run.sh && \
