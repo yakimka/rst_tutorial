@@ -137,6 +137,9 @@ async def preload_lesson(lesson_id: str) -> None:
 
 
 async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
+    global _current_lesson_id
+    _current_lesson_id = lesson_id
+
     if push_to_history:
         set_load_lesson_loader()
 
@@ -145,7 +148,7 @@ async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
         logger.info("Using preloaded lesson: %s", lesson_id)
     else:
         lesson, err = await fetch_and_parse_lesson(lesson_id)
-        if push_to_history and err == "not_found":
+        if push_to_history:
             set_lesson_id_in_url(lesson_id)
         if err:
             display_error(is404=err == "not_found")
@@ -188,9 +191,6 @@ def display_lesson(lesson: Lesson) -> None:
     rst_input_element.scrollTop = 0
     output_element = document.querySelector("#rst-output")
     output_element.scrollTop = 0
-
-    global _current_lesson_id
-    _current_lesson_id = lesson.id
 
 
 def display_error(is404: bool = False) -> None:
