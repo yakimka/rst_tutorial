@@ -13,6 +13,7 @@ import js
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger("lesson_page")
 
+_current_lesson_id = ""
 _preloaded_lesson_cache: dict[str, "Lesson"] = {}
 
 
@@ -42,6 +43,7 @@ def render_rst(rst: str) -> str:
 
 
 class Lesson(NamedTuple):
+    id: str
     main_chapter: str
     description: str
     interactive: str
@@ -52,7 +54,7 @@ _chapter_pattern = re.compile(r"^\.\.\s*\n\s*_Chapter:\s*(.*)", re.MULTILINE)
 _next_pattern = re.compile(r"^\.\.\s*\n\s*_Next:\s*(.*)", re.MULTILINE)
 
 
-def parse_lesson(rst: str) -> Lesson | None:
+def parse_lesson(rst: str, lesson_id: str) -> Lesson | None:
     if not rst:
         return None
     example_delimiter = "# Lesson Example"
@@ -73,6 +75,7 @@ def parse_lesson(rst: str) -> Lesson | None:
         interactive = dedent(interactive.split("\n", 1)[1])
 
     return Lesson(
+        id=lesson_id,
         main_chapter=chapter_title_from_meta,
         description=description,
         interactive=interactive,
@@ -111,7 +114,7 @@ async def fetch_and_parse_lesson(lesson_id: str) -> tuple[Lesson | None, str]:
             return None, "not_found"
         else:
             return None, "network"
-    lesson = parse_lesson(full_rst_content)
+    lesson = parse_lesson(full_rst_content, lesson_id)
     if lesson is None:
         return None, "invalid_lesson"
     return lesson, ""
@@ -185,6 +188,9 @@ def display_lesson(lesson: Lesson) -> None:
     rst_input_element.scrollTop = 0
     output_element = document.querySelector("#rst-output")
     output_element.scrollTop = 0
+
+    global _current_lesson_id
+    _current_lesson_id = lesson.id
 
 
 def display_error(is404: bool = False) -> None:
@@ -263,7 +269,7 @@ async def handle_next_lesson_click(event) -> None:
 
 async def on_history_change(event):
     lesson_id = get_current_lesson_id()
-    if lesson_id:
+    if lesson_id and lesson_id != _current_lesson_id:
         await set_current_lesson(lesson_id, push_to_history=False)
 
 
