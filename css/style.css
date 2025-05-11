@@ -29,6 +29,7 @@ header {
 }
 
 .container {
+    width: 100%;
     max-width: 2800px;
     display: flex;
     flex-grow: 1;
