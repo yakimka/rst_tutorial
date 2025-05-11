@@ -1,6 +1,4 @@
 name = "reStructuredText Excercises"
 description = "RST tutorial app"
 packages = ["docutils", "pygments"]
-
-#[files]
-#"./l/1_1_what_is_restructured_text.rst" = ""
+interpreter = "/pyodide/pyodide.mjs"

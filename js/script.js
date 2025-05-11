@@ -1,4 +1,4 @@
-const switchTheme = document.getElementById('theme_switcher');
+const switchTheme = document.getElementById('theme_switcher')
 if (switchTheme) {
     // https://github.com/RWDevelopment/theme_switch
     const html = document.documentElement
