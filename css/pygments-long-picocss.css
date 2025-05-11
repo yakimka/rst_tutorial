@@ -1,0 +1,50 @@
+/* example stylesheet for Docutils */
+
+/* :Author:    Günter Milde */
+/* :Copyright: © 2012 G. Milde */
+/* :License:   This stylesheet is placed in the public domain. */
+
+/* Syntax highlight rules for HTML documents generated with Docutils */
+/* using the ``--syntax-highlight=long`` option (new in v. 0.9). */
+
+/* This stylesheet implements Pygment's "default" style with less rules than */
+/* pygments-default using class hierarchies.                                 */
+/* Use it as example for "handcrafted" styles with only few rules.      */
+
+.code                              { background-color: var(--pico-code-background-color); color: var(--pico-code-color); }
+.code .comment                     { color: var(--pico-muted-color); font-style: italic }
+.code .error                       { border: 1px solid var(--pico-form-element-invalid-border-color); }
+.code .generic.deleted             { color: var(--pico-del-color); }
+.code .generic.emph                { font-style: italic }
+.code .generic.error               { color: var(--pico-del-color); }
+.code .generic.heading             { color: var(--pico-primary); font-weight: bold }
+.code .generic.inserted            { color: var(--pico-ins-color); }
+.code .generic.output              { color: var(--pico-muted-color); }
+.code .generic.prompt              { color: var(--pico-primary); font-weight: bold }
+.code .generic.strong              { font-weight: bold }
+.code .generic.subheading          { color: var(--pico-secondary); font-weight: bold }
+.code .generic.traceback           { color: var(--pico-primary); }
+.code .keyword                     { color: #AA22FF; font-weight: bold } /* Pygments purple for keywords */
+.code .keyword.pseudo              { font-weight: normal }
+.code .literal.number              { color: var(--pico-muted-color); }
+.code .literal.string              { color: #BB4444; } /* Pygments red-brown for strings */
+.code .literal.string.doc          { color: #BB4444; font-style: italic } /* Pygments red-brown for docstrings */
+.code .literal.string.escape       { color: #BB6622; font-weight: bold } /* Pygments orange-brown for escapes */
+.code .literal.string.interpol     { color: #BB6688; font-weight: bold } /* Pygments mauve for interpolated */
+.code .literal.string.other        { color: var(--pico-ins-color); } /* e.g. r"" strings */
+.code .literal.string.regex        { color: #BB6688; } /* Pygments mauve for regex */
+.code .literal.string.symbol       { color: #B8860B; } /* Pygments dark yellow for symbols */
+.code .name.attribute              { color: #BB4444; } /* Pygments red-brown for attributes */
+.code .name.builtin                { color: #AA22FF; } /* Pygments purple for builtins */
+.code .name.class                  { color: var(--pico-primary); }
+.code .name.constant               { color: var(--pico-del-color); }
+.code .name.decorator              { color: #AA22FF; } /* Pygments purple for decorators */
+.code .name.entity                 { color: var(--pico-color); font-weight: bold } /* Use main text color, bolded */
+.code .name.exception              { color: var(--pico-del-color); font-weight: bold }
+.code .name.function               { color: var(--pico-ins-color); }
+.code .name.label                  { color: #A0A000; } /* Pygments dark yellow/olive for labels */
+.code .name.namespace              { color: var(--pico-primary); font-weight: bold }
+.code .name.tag                    { color: var(--pico-primary); font-weight: bold }
+.code .name.variable               { color: #B8860B; } /* Pygments dark yellow for variables */
+.code .operator                    { color: var(--pico-muted-color); }
+.code .operator.word               { color: #AA22FF; font-weight: bold } /* Pygments purple for operator words */

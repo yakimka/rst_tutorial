@@ -6,9 +6,9 @@ from textwrap import dedent
 from typing import NamedTuple
 
 from docutils.core import publish_parts
-from pyscript import document, fetch, ffi, window
 
 import js
+from pyscript import document, fetch, ffi, window
 
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger("lesson_page")

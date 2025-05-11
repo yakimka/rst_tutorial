@@ -2,10 +2,12 @@ FROM python:3.12-alpine
 
 WORKDIR /app
 
+COPY ./pyscript ./pyscript
+COPY ./pyodide ./pyodide
 COPY ./js ./js
 COPY ./css ./css
-COPY ./l ./l
 COPY ./img ./img
+COPY ./l ./l
 COPY index.html lesson.html playground.html pyscript.toml main.py ./
 
 RUN echo "#!/bin/sh" > /run.sh && \
