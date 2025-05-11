@@ -11,40 +11,40 @@
 /* pygments-default using class hierarchies.                                 */
 /* Use it as example for "handcrafted" styles with only few rules.      */
 
-.code                              { background: #f8f8f8; }
-.code .comment                     { color: #008800; font-style: italic }
-.code .error                       { border: 1px solid #FF0000 }
-.code .generic.deleted             { color: #A00000 }
+.code                              { background-color: var(--pico-code-background-color); color: var(--pico-code-color); }
+.code .comment                     { color: var(--pico-muted-color); font-style: italic }
+.code .error                       { border: 1px solid var(--pico-form-element-invalid-border-color); }
+.code .generic.deleted             { color: var(--pico-del-color); }
 .code .generic.emph                { font-style: italic }
-.code .generic.error               { color: #FF0000 }
-.code .generic.heading             { color: #000080; font-weight: bold }
-.code .generic.inserted            { color: #00A000 }
-.code .generic.output              { color: #808080 }
-.code .generic.prompt              { color: #000080; font-weight: bold }
+.code .generic.error               { color: var(--pico-del-color); }
+.code .generic.heading             { color: var(--pico-primary); font-weight: bold }
+.code .generic.inserted            { color: var(--pico-ins-color); }
+.code .generic.output              { color: var(--pico-muted-color); }
+.code .generic.prompt              { color: var(--pico-primary); font-weight: bold }
 .code .generic.strong              { font-weight: bold }
-.code .generic.subheading          { color: #800080; font-weight: bold }
-.code .generic.traceback           { color: #0040D0 }
-.code .keyword                     { color: #AA22FF; font-weight: bold }
+.code .generic.subheading          { color: var(--pico-secondary); font-weight: bold }
+.code .generic.traceback           { color: var(--pico-primary); }
+.code .keyword                     { color: #AA22FF; font-weight: bold } /* Pygments purple for keywords */
 .code .keyword.pseudo              { font-weight: normal }
-.code .literal.number              { color: #666666 }
-.code .literal.string              { color: #BB4444 }
-.code .literal.string.doc          { color: #BB4444; font-style: italic }
-.code .literal.string.escape       { color: #BB6622; font-weight: bold }
-.code .literal.string.interpol     { color: #BB6688; font-weight: bold }
-.code .literal.string.other        { color: #008000 }
-.code .literal.string.regex        { color: #BB6688 }
-.code .literal.string.symbol       { color: #B8860B }
-.code .name.attribute              { color: #BB4444 }
-.code .name.builtin                { color: #AA22FF }
-.code .name.class                  { color: #0000FF }
-.code .name.constant               { color: #880000 }
-.code .name.decorator              { color: #AA22FF }
-.code .name.entity                 { color: #999999; font-weight: bold }
-.code .name.exception              { color: #D2413A; font-weight: bold }
-.code .name.function               { color: #00A000 }
-.code .name.label                  { color: #A0A000 }
-.code .name.namespace              { color: #0000FF; font-weight: bold }
-.code .name.tag                    { color: #008000; font-weight: bold }
-.code .name.variable               { color: #B8860B }
-.code .operator                    { color: #666666 }
-.code .operator.word               { color: #AA22FF; font-weight: bold }
+.code .literal.number              { color: var(--pico-muted-color); }
+.code .literal.string              { color: #BB4444; } /* Pygments red-brown for strings */
+.code .literal.string.doc          { color: #BB4444; font-style: italic } /* Pygments red-brown for docstrings */
+.code .literal.string.escape       { color: #BB6622; font-weight: bold } /* Pygments orange-brown for escapes */
+.code .literal.string.interpol     { color: #BB6688; font-weight: bold } /* Pygments mauve for interpolated */
+.code .literal.string.other        { color: var(--pico-ins-color); } /* e.g. r"" strings */
+.code .literal.string.regex        { color: #BB6688; } /* Pygments mauve for regex */
+.code .literal.string.symbol       { color: #B8860B; } /* Pygments dark yellow for symbols */
+.code .name.attribute              { color: #BB4444; } /* Pygments red-brown for attributes */
+.code .name.builtin                { color: #AA22FF; } /* Pygments purple for builtins */
+.code .name.class                  { color: var(--pico-primary); }
+.code .name.constant               { color: var(--pico-del-color); }
+.code .name.decorator              { color: #AA22FF; } /* Pygments purple for decorators */
+.code .name.entity                 { color: var(--pico-color); font-weight: bold } /* Use main text color, bolded */
+.code .name.exception              { color: var(--pico-del-color); font-weight: bold }
+.code .name.function               { color: var(--pico-ins-color); }
+.code .name.label                  { color: #A0A000; } /* Pygments dark yellow/olive for labels */
+.code .name.namespace              { color: var(--pico-primary); font-weight: bold }
+.code .name.tag                    { color: var(--pico-primary); font-weight: bold }
+.code .name.variable               { color: #B8860B; } /* Pygments dark yellow for variables */
+.code .operator                    { color: var(--pico-muted-color); }
+.code .operator.word               { color: #AA22FF; font-weight: bold } /* Pygments purple for operator words */
