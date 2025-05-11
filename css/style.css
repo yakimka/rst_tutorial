@@ -196,3 +196,8 @@ header .dropdown summary {
 td, th {
     border: thin solid var(--pico-muted-border-color) !important;
 }
+
+/* Custom Roles*/
+.red-text {
+    color: red;
+}
