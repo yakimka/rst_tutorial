@@ -11,10 +11,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <style>
         .playground-main-container {
-            display: flex;
-            flex-direction: row; /* Arrange panels side-by-side */
-            flex-grow: 1;
-            overflow: hidden;
+            flex-direction: row;
         }
         .panel {
             padding: 10px;
@@ -25,7 +22,7 @@
         }
         #rst-input-container, #rst-output-container {
             flex: 1; /* Distribute space equally or as per Split.js */
-            min-height: 100px; /* Ensure panels have a minimum height */
+            min-height: 100px;
         }
         #rst-input {
             width: 100%;
@@ -59,7 +56,7 @@
     <h1 id="page-main-title">reStructuredText Playground</h1>
     <a href="#" id="theme_switcher"></a>
 </header>
-<div class="playground-main-container">
+<div class="container playground-main-container">
     <div class="panel" id="rst-input-container">
         <textarea id="rst-input" py-input="render_rst_on_input" placeholder="Type reStructuredText here..."></textarea>
     </div>
@@ -85,11 +82,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         Split(['#rst-input-container', '#rst-output-container'], {
-            direction: 'horizontal', // Change direction to horizontal
-            sizes: [50, 50], // Initial sizes in percentage for input and output panels
-            minSize: [200, 200], // Minimum width for input and output areas
-            gutterSize: 8,   // Size of the draggable gutter in pixels
-            cursor: 'col-resize', // Change cursor for horizontal split
+            direction: 'horizontal',
+            sizes: [50, 50],
+            minSize: [200, 200],
+            gutterSize: 8,
+            cursor: 'col-resize',
             elementStyle: (dimension, size, gutterSize) => ({
                 'flex-basis': `calc(${size}% - ${gutterSize}px)`,
             }),
