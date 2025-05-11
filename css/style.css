@@ -1,7 +1,7 @@
 /*:root {*/
-/*    --pico-font-size: 100%; !* Adjust this value to make fonts smaller or larger *!*/
+/*    --pico-font-size: 100%;
 /*}*/
-[role="button"] { /* Style for Pico buttons */
+[role="button"] {
     padding: 0.4rem 0.8rem; /* Smaller padding */
     font-size: 0.9em; /* Smaller font size */
 }
@@ -13,54 +13,56 @@ body {
     height: 100vh;
 }
 
-header { /* New header styles */
+header {
     display: flex;
     justify-content: space-between; /* Pushes title and switcher apart */
     align-items: center;
-    padding: 0 10px; /* Add some padding */
-    flex-shrink: 0; /* Prevent header from shrinking */
+    padding: 0 10px;
+    flex-shrink: 0;
 }
 
-#page-main-title { /* Styles for h1 within header */
+#page-main-title {
     text-align: center;
     margin-top: 0;
     margin-bottom: 0;
-    flex-grow: 1; /* Allow title to take available space */
+    flex-grow: 1;
 }
 
 .container {
+    width: 100%;
+    max-width: 2800px;
     display: flex;
     flex-grow: 1;
-    overflow: hidden; /* Prevents scrollbars on container if children manage their own */
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .panel {
-    /* flex: 1; Removed, will be applied specifically to child panels for width/height distribution */
     padding: 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* For internal scrolling, children will handle actual scroll */
+    overflow: hidden;
 }
 
 #lesson-content-area {
-    flex-grow: 1; /* Takes available vertical space in #lesson-panel */
-    overflow-y: auto; /* Scrollbar for lesson text if it overflows */
-    border: 1px solid var(--pico-muted-border-color); /* Consistent border style */
-    padding: 5px; /* Inner padding for the lesson content */
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid var(--pico-muted-border-color);
+    padding: 5px;
     box-sizing: border-box;
 }
 
 .editor-column {
-    /* flex: 1.5; Removed: Split.js will manage width */
     display: flex;
-    flex-direction: column; /* Stack input and output vertically */
-    overflow: hidden; /* Children will manage their own scrolling */
+    flex-direction: column;
+    overflow: hidden;
 }
 
 #rst-input {
     width: 100%;
-    flex-grow: 1; /* Takes available space in the panel */
+    flex-grow: 1;
     box-sizing: border-box;
     font-family: monospace;
     font-size: 1em;
@@ -71,23 +73,23 @@ header { /* New header styles */
 
 #rst-output {
     border: 1px solid var(--pico-muted-border-color);
-    flex-grow: 1; /* Takes available space in the panel */
-    overflow-y: auto; /* Scrollbar for content overflow */
+    flex-grow: 1;
+    overflow-y: auto;
     padding: 5px;
     box-sizing: border-box;
 }
 
 /* Styles for docutils system messages */
 aside.system-message {
-    background-color: var(--pico-table-row-stripped-background-color); /* Using a light, neutral Pico variable */
+    background-color: var(--pico-table-row-stripped-background-color);
     border: 1px solid var(--pico-muted-border-color);
     padding: 10px;
     margin-bottom: 10px;
 }
 
 aside.system-message p.system-message-title {
-    background-color: var(--pico-secondary-background); /* Using a Pico background */
-    color: var(--pico-secondary-inverse); /* Text color for the above background */
+    background-color: var(--pico-secondary-background);
+    color: var(--pico-secondary-inverse);
     font-weight: bold;
     padding: 5px;
     margin-top: 0;
@@ -108,15 +110,15 @@ aside.system-message pre.literal-block {
 }
 
 #rst-output-area #output-footer {
-    text-align: right; /* Aligns button to the right */
-    padding-top: 10px; /* Space above the button */
-    flex-shrink: 0; /* Prevent footer from shrinking */
+    text-align: right;
+    padding-top: 10px;
+    flex-shrink: 0;
 }
 
 #lesson-panel #lesson-footer {
-    text-align: left; /* Aligns button to the left */
-    padding-top: 10px; /* Space above the button */
-    flex-shrink: 0; /* Prevent footer from shrinking */
+    text-align: left;
+    padding-top: 10px;
+    flex-shrink: 0;
 }
 
 #page-loader {
@@ -134,8 +136,8 @@ aside.system-message pre.literal-block {
 }
 
 .loader-spinner {
-    border: 8px solid var(--pico-form-element-background-color); /* Light grey base from Pico */
-    border-top: 8px solid var(--pico-primary); /* Blue from Pico */
+    border: 8px solid var(--pico-form-element-background-color);
+    border-top: 8px solid var(--pico-primary);
     border-radius: 50%;
     width: 60px;
     height: 60px;
