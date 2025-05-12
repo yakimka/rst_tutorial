@@ -1,20 +1,29 @@
+from __future__ import annotations
+
 import asyncio
+import base64
 import io
 import logging
+import lzma
 import re
+import time
 from textwrap import dedent
-from typing import NamedTuple
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 from docutils.core import publish_parts
 
 import js
 from pyscript import document, fetch, ffi, window
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger("lesson_page")
 
 _current_lesson_id = ""
-_preloaded_lesson_cache: dict[str, "Lesson"] = {}
+_preloaded_lesson_cache: dict[str, Lesson] = {}
 
 
 # ===== Logic =====
@@ -133,6 +142,16 @@ async def preload_lesson(lesson_id: str) -> None:
     logger.warning("Failed to preload lesson: %s", lesson_id)
 
 
+def encode_text(text: str) -> str:
+    compressed = lzma.compress(text.encode("utf-8"))
+    return base64.urlsafe_b64encode(compressed).decode("ascii")
+
+
+def decode_text(encoded: str) -> str:
+    compressed = base64.urlsafe_b64decode(encoded.encode("ascii"))
+    return lzma.decompress(compressed).decode("utf-8")
+
+
 # ===== UI =====
 
 
@@ -172,15 +191,15 @@ async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
 
 
 def display_lesson(lesson: Lesson) -> None:
-    lesson_div = document.querySelector("#lesson-content-area")
-    rst_input_element = document.querySelector("#rst-input")
-    page_main_title_element = document.querySelector("#page-main-title")
-    next_button_element = document.querySelector("#next-lesson-button")
+    lesson_div = document.getElementById("lesson-content-area")
+    rst_input_element = document.getElementById("rst-input")
+    page_main_title_element = document.getElementById("page-main-title")
+    next_button_element = document.getElementById("next-lesson-button")
 
     page_main_title_element.textContent = lesson.main_chapter
     lesson_div.innerHTML = render_rst(lesson.description)
     rst_input_element.value = lesson.interactive
-    render_rst_on_input()
+    render_rst_from_input()  # Use the direct implementation to avoid delay
     if lesson.next_lesson_id:
         next_button_element.setAttribute("data-next-lesson-id", lesson.next_lesson_id)
         next_button_element.style.display = "inline-block"
@@ -189,15 +208,15 @@ def display_lesson(lesson: Lesson) -> None:
 
     lesson_div.scrollTop = 0
     rst_input_element.scrollTop = 0
-    output_element = document.querySelector("#rst-output")
+    output_element = document.getElementById("rst-output")
     output_element.scrollTop = 0
 
 
 def display_error(is404: bool = False) -> None:
-    lesson_div = document.querySelector("#lesson-content-area")
-    rst_input_element = document.querySelector("#rst-input")
-    next_button_element = document.querySelector("#next-lesson-button")
-    output_div = document.querySelector("#rst-output")
+    lesson_div = document.getElementById("lesson-content-area")
+    rst_input_element = document.getElementById("rst-input")
+    next_button_element = document.getElementById("next-lesson-button")
+    output_div = document.getElementById("rst-output")
 
     message = "Error loading lesson. Please try again later."
     if is404:
@@ -215,9 +234,6 @@ def go_to_main_page() -> None:
 
 def get_current_lesson_id() -> str:
     url = js.URL.new(window.location.href)
-    last_path_segment = url.pathname.split("/")[-1]
-    if last_path_segment.startswith("playground"):
-        return "playground"
     return url.searchParams.get("id") or ""
 
 
@@ -228,21 +244,21 @@ def set_lesson_id_in_url(lesson_id: str) -> None:
 
 
 def set_load_lesson_loader() -> None:
-    next_button_element = document.querySelector("#next-lesson-button")
+    next_button_element = document.getElementById("next-lesson-button")
     if next_button_element:
         next_button_element.setAttribute("aria-busy", "true")
         next_button_element.setAttribute("disabled", "true")
 
 
 def reset_load_lesson_loader() -> None:
-    next_button_element = document.querySelector("#next-lesson-button")
+    next_button_element = document.getElementById("next-lesson-button")
     if next_button_element:
         next_button_element.removeAttribute("aria-busy")
         next_button_element.removeAttribute("disabled")
 
 
 def hide_main_loader() -> None:
-    page_loader_element = document.querySelector("#page-loader")
+    page_loader_element = document.getElementById("page-loader")
     body_header_element = document.querySelector("body > header")
     body_container_element = document.querySelector("body > div.container")
 
@@ -257,11 +273,42 @@ def hide_main_loader() -> None:
 # ===== Event Handlers =====
 
 
-def render_rst_on_input(event=None):
-    input_element = document.querySelector("#rst-input")
+def debounce(func: Callable, delay: int = 300) -> Callable:
+    """
+    Returns a debounced version of the function that will postpone
+    its execution until after delay milliseconds have elapsed
+    since the last time it was invoked.
+    """
+    last_call_time = [0.0]
+    timer = [None]
+
+    def debounced(*args: Any, **kwargs: Any) -> None:
+        current_time = time.time() * 1000
+        last_call_time[0] = current_time
+
+        # Clear previous timer
+        if timer[0] is not None:
+            window.clearTimeout(timer[0])
+            timer[0] = None
+
+        # Set new timer
+        def call_func():
+            timer[0] = None
+            func(*args, **kwargs)
+
+        timer[0] = window.setTimeout(ffi.create_proxy(call_func), delay)
+
+    return debounced
+
+
+def render_rst_from_input(event=None):
+    input_element = document.getElementById("rst-input")
     rst_text = input_element.value
-    output_div = document.querySelector("#rst-output")
+    output_div = document.getElementById("rst-output")
     output_div.innerHTML = render_rst(rst_text)
+
+
+_render_rst_from_input_debounced = debounce(render_rst_from_input, 50)
 
 
 async def handle_next_lesson_click(event) -> None:
@@ -276,16 +323,56 @@ async def on_history_change(event):
         await set_current_lesson(lesson_id, push_to_history=False)
 
 
+# ===== Playground =====
+
+
+def is_playground() -> str:
+    url = js.URL.new(window.location.href)
+    last_path_segment = url.pathname.split("/")[-1]
+    return last_path_segment.startswith("playground")
+
+
+def apply_paste() -> None:
+    url = js.URL.new(window.location.href)
+    if decoded := url.searchParams.get("paste"):
+        input_element = document.getElementById("rst-input")
+        try:
+            input_element.value = decode_text(decoded)
+        except Exception:
+            input_element.value = "!! Invalid paste data"
+        return None
+    return None
+
+
+def share_paste(event) -> None:
+    input_element = document.getElementById("rst-input")
+    rst_text = input_element.value
+    if not rst_text.strip():
+        return
+    try:
+        encoded = encode_text(rst_text)
+    except Exception:
+        js.alert("Error encoding data")
+        return
+
+    url = js.URL.new(window.location.href)
+    url.searchParams.set("paste", encoded)
+    window.history.replaceState(None, "", url.href)
+
+    js.alert("Copy URL from the address bar")
+
+
 # ===== Main Setup =====
 
 
 async def main_app_setup():
-    if lesson_id := get_current_lesson_id():
-        if lesson_id == "playground":
-            render_rst_on_input()
-            hide_main_loader()
-            return
+    if is_playground():
+        apply_paste()
+        render_rst_from_input()  # Use the direct implementation to avoid delay
+        hide_main_loader()
+        return
 
+    if lesson_id := get_current_lesson_id():
         proxy = ffi.create_proxy(on_history_change)
         window.addEventListener("popstate", proxy)
         await set_current_lesson(lesson_id, push_to_history=False)

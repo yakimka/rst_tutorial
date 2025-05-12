@@ -109,14 +109,14 @@ aside.system-message pre.literal-block {
     overflow-x: auto;
 }
 
-#rst-output-area #output-footer {
-    text-align: right;
+.left-button-footer {
+    text-align: left;
     padding-top: 10px;
     flex-shrink: 0;
 }
 
-#lesson-panel #lesson-footer {
-    text-align: left;
+.right-button-footer {
+    text-align: right;
     padding-top: 10px;
     flex-shrink: 0;
 }
