@@ -35,7 +35,7 @@
     </div>
     <div class="editor-column">
         <div class="panel" id="rst-input-area">
-            <textarea id="rst-input" py-input="render_rst_on_input"
+            <textarea id="rst-input" py-input="_render_rst_from_input_debounced"
                       placeholder="Type reStructuredText here..."></textarea>
         </div>
         <div class="panel" id="rst-output-area">

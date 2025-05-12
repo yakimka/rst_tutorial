@@ -38,7 +38,7 @@ if (switchTheme) {
     }
 }
 
-const textarea = document.querySelector('#rst-input');
+const textarea = document.getElementById('rst-input');
 if (textarea) {
     if (textarea && typeof enableTabToIndent === 'function') {
         enableTabToIndent(textarea);
