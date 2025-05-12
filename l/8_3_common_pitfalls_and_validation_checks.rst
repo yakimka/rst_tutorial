@@ -1,7 +1,5 @@
 ..
    _Chapter: 8. Configuration & Best Practices
-..
-   _Next:
 
 ====================================================
 Lesson 8.3: Common Pitfalls and Validation Checks
