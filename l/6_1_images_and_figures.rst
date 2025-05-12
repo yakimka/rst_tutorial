@@ -1,10 +1,10 @@
 ..
-   _Chapter: 5. Multimedia
+   _Chapter: 6. Multimedia
 ..
-   _Next: 5_2_tables_grid_simple_csv_list
+   _Next: 7_1_comment_syntax
 
 =================================
-Lesson 5.1: Images and Figures
+Lesson 6.1: Images and Figures
 =================================
 
 Images and figures are essential for enriching documents, providing visual context,

@@ -1,10 +1,10 @@
 ..
-   _Chapter: 6. Directives and Roles
+   _Chapter: 7. Directives, Roles & Comments
 ..
-   _Next: 6_2_admonitions_and_layout_directives
+   _Next: 7_3_admonitions_and_layout_directives
 
 =========================================
-Lesson 6.1: Directive Syntax and Options
+Lesson 7.2: Directive Syntax and Options
 =========================================
 
 Directives are a powerful extension mechanism in reStructuredText. They allow you

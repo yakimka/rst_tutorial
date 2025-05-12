@@ -1,10 +1,10 @@
 ..
-   _Chapter: 7. Comments and Configuration
+   _Chapter: 8. Configuration & Best Practices
 ..
-   _Next: 8_1_style_and_readability_tips
+   _Next: 8_2_style_and_readability_tips
 
 ======================================
-Lesson 7.2: Configuration Settings
+Lesson 8.1: Configuration Settings
 ======================================
 
 reStructuredText itself defines a markup syntax, but the way this syntax is processed

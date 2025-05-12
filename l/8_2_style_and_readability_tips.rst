@@ -1,10 +1,10 @@
 ..
-   _Chapter: 8. Practice and Best Practices
+   _Chapter: 8. Configuration & Best Practices
 ..
-   _Next: 8_2_common_pitfalls_and_validation_checks
+   _Next: 8_3_common_pitfalls_and_validation_checks
 
 =========================================
-Lesson 8.1: Style and Readability Tips
+Lesson 8.2: Style and Readability Tips
 =========================================
 
 Writing reStructuredText is not just about getting the syntax right; it's also about

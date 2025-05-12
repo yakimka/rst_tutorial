@@ -1,10 +1,10 @@
 ..
-   _Chapter: 4. Document Structure
+   _Chapter: 3. Document Structure
 ..
-   _Next: 5_1_images_and_figures
+   _Next: 4_1_bulleted_and_enumerated_lists
 
 ======================================
-Lesson 4.3: Footnotes and Citations
+Lesson 3.3: Footnotes and Citations
 ======================================
 
 Footnotes and citations are used to provide additional information, references, or

@@ -1,10 +1,10 @@
 ..
-   _Chapter: 6. Directives and Roles
+   _Chapter: 7. Directives, Roles & Comments
 ..
-   _Next: 6_4_substitution_definitions
+   _Next: 7_5_substitution_definitions
 
 ======================================
-Lesson 6.3: Interpreted Text Roles
+Lesson 7.4: Interpreted Text Roles
 ======================================
 
 Interpreted text is a versatile feature in reStructuredText that allows you to semantically

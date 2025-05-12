@@ -1,7 +1,7 @@
 ..
-   _Chapter: 7. Comments and Configuration
+   _Chapter: 7. Directives, Roles & Comments
 ..
-   _Next: 7_2_configuration_settings
+   _Next: 7_2_directive_syntax_and_options
 
 =============================
 Lesson 7.1: Comment Syntax

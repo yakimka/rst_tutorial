@@ -1,10 +1,10 @@
 ..
-   _Chapter: 4. Document Structure
+   _Chapter: 3. Document Structure
 ..
-   _Next: 4_2_hyperlinks_external_internal_anonymous
+   _Next: 3_2_hyperlinks_external_internal_anonymous
 
 =============================================
-Lesson 4.1: Sections, Titles, and Transitions
+Lesson 3.1: Sections, Titles, and Transitions
 =============================================
 
 Structuring a document logically is crucial for readability and organization.

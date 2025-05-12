@@ -1,10 +1,10 @@
 ..
-   _Chapter: 6. Directives and Roles
+   _Chapter: 7. Directives, Roles & Comments
 ..
-   _Next: 7_1_comment_syntax
+   _Next: 8_1_configuration_settings
 
 ========================================
-Lesson 6.4: Substitution Definitions
+Lesson 7.5: Substitution Definitions
 ========================================
 
 Substitution definitions in reStructuredText allow you to define a piece of text or

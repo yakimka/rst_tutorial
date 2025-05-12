@@ -1,7 +1,7 @@
 ..
    _Chapter: 2. Basic Text Formatting (Inline Markup)
 ..
-   _Next: 3_1_bulleted_and_enumerated_lists
+   _Next: 3_1_sections_titles_and_transitions
 
 ========================================
 Lesson 2.4: Escaping Markup Characters

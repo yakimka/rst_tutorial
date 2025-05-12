@@ -1,10 +1,10 @@
 ..
-   _Chapter: 3. Lists and Blocks
+   _Chapter: 4. Lists and Blocks
 ..
-   _Next: 3_2_definition_field_and_option_lists
+   _Next: 4_2_definition_field_and_option_lists
 
 ===========================================
-Lesson 3.1: Bulleted and Enumerated Lists
+Lesson 4.1: Bulleted and Enumerated Lists
 ===========================================
 
 Lists are a fundamental way to organize and present information in a clear,

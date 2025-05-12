@@ -1,10 +1,10 @@
 ..
-   _Chapter: 3. Lists and Blocks
+   _Chapter: 4. Lists and Blocks
 ..
-   _Next: 4_1_sections_titles_and_transitions
+   _Next: 5_1_tables_grid_simple_csv_list
 
 ================================================
-Lesson 3.3: Literal, Line, and Doctest Blocks
+Lesson 4.3: Literal, Line, and Doctest Blocks
 ================================================
 
 reStructuredText offers several ways to include blocks of text where formatting,

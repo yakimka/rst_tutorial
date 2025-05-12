@@ -1,10 +1,10 @@
 ..
-   _Chapter: 4. Document Structure
+   _Chapter: 3. Document Structure
 ..
-   _Next: 4_3_footnotes_and_citations
+   _Next: 3_3_footnotes_and_citations
 
 =======================================================
-Lesson 4.2: Hyperlinks - External, Internal, Anonymous
+Lesson 3.2: Hyperlinks - External, Internal, Anonymous
 =======================================================
 
 Hyperlinks are essential for connecting documents and navigating within them.

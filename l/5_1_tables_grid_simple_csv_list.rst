@@ -1,10 +1,10 @@
 ..
-   _Chapter: 5. Multimedia
+   _Chapter: 5. Tables & Data
 ..
-   _Next: 6_1_directive_syntax_and_options
+   _Next: 6_1_images_and_figures
 
 =======================================================
-Lesson 5.2: Tables - Grid, Simple, CSV, and List Tables
+Lesson 5.1: Tables - Grid, Simple, CSV, and List Tables
 =======================================================
 
 Tables are a powerful way to present structured data. reStructuredText offers

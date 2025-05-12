@@ -1,10 +1,10 @@
 ..
-   _Chapter: 3. Lists and Blocks
+   _Chapter: 4. Lists and Blocks
 ..
-   _Next: 3_3_literal_line_and_doctest_blocks
+   _Next: 4_3_literal_line_and_doctest_blocks
 
 ==================================================
-Lesson 3.2: Definition, Field, and Option Lists
+Lesson 4.2: Definition, Field, and Option Lists
 ==================================================
 
 Beyond simple bulleted and enumerated lists, reStructuredText provides specialized list

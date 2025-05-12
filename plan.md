@@ -10,31 +10,30 @@
     - 2.3. Recognition Rules, Order & Character-Level Markup
     - 2.4. Escaping Markup Characters
 
-## 3. Lists and Blocks
-    - 3.1. Bulleted and Enumerated Lists
-    - 3.2. Definition, Field, and Option Lists
-    - 3.3. Literal, Line, and Doctest Blocks
+## 3. Document Structure
+    - 3.1. Sections, Titles, and Transitions
+    - 3.2. Hyperlinks: External, Internal, Anonymous
+    - 3.3. Footnotes and Citations
 
-## 4. Document Structure
-    - 4.1. Sections, Titles, and Transitions
-    - 4.2. Hyperlinks: External, Internal, Anonymous
-    - 4.3. Footnotes and Citations
+## 4. Lists and Blocks
+    - 4.1. Bulleted and Enumerated Lists
+    - 4.2. Definition, Field, and Option Lists
+    - 4.3. Literal, Line, and Doctest Blocks
 
-## 5. Multimedia
-    - 5.1. Images and Figures
-    - 5.2. Tables: Grid, Simple, CSV-Table, List-Table
+## 5. Tables & Data
+    - 5.1. Tables: Grid, Simple, CSV-Table, List-Table
 
-## 6. Directives and Roles
-    - 6.1. Directive Syntax & Options
-    - 6.2. Admonitions and Layout Directives
-    - 6.3. Interpreted Text Roles
-    - 6.4. Substitution Definitions
+## 6. Multimedia
+    - 6.1. Images and Figures
 
-## 7. Comments and Configuration
+## 7. Directives, Roles & Comments
     - 7.1. Comment Syntax
-    - 7.2. Configuration Settings (e.g., tab_width, inline_markup)
-    - 7.3. Error Handling & System Messages
+    - 7.2. Directive Syntax & Options
+    - 7.3. Admonitions and Layout Directives
+    - 7.4. Interpreted Text Roles
+    - 7.5. Substitution Definitions
 
-## 8. Practice and Best Practices
-    - 8.1. Style and Readability Tips
-    - 8.2. Common Pitfalls and Validation Checks
+## 8. Configuration & Best Practices
+    - 8.1. Configuration Settings
+    - 8.2. Style and Readability Tips
+    - 8.3. Common Pitfalls and Validation Checks

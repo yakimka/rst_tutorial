@@ -1,10 +1,10 @@
 ..
-   _Chapter: 8. Practice and Best Practices
+   _Chapter: 8. Configuration & Best Practices
 ..
    _Next:
 
 ====================================================
-Lesson 8.2: Common Pitfalls and Validation Checks
+Lesson 8.3: Common Pitfalls and Validation Checks
 ====================================================
 
 As you've learned, reStructuredText relies on subtle cues like indentation and blank

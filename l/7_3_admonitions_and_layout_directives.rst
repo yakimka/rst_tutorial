@@ -1,10 +1,10 @@
 ..
-   _Chapter: 6. Directives and Roles
+   _Chapter: 7. Directives, Roles & Comments
 ..
-   _Next: 6_3_interpreted_text_roles
+   _Next: 7_4_interpreted_text_roles
 
 ================================================
-Lesson 6.2: Admonitions and Layout Directives
+Lesson 7.3: Admonitions and Layout Directives
 ================================================
 
 In the previous lesson, we learned the general syntax for directives. Now, let's explore
