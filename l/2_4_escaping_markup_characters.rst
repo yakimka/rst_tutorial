@@ -70,6 +70,12 @@ References:
 
 **Your Task:**
 
+.. note::
+
+    "System Message: WARNING" in the output panel indicates that the text is not
+    valid reStructuredText. This is expected when you are learning and experimenting.
+    Don't worry about it; just focus on the task at hand.
+
 The editor below contains text with several instances where characters should be
 displayed literally but might be misinterpreted as markup. Your task is to apply
 the escaping mechanism correctly.
