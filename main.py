@@ -1,6 +1,8 @@
 import asyncio
+import base64
 import io
 import logging
+import lzma
 import re
 from textwrap import dedent
 from typing import NamedTuple
@@ -133,6 +135,16 @@ async def preload_lesson(lesson_id: str) -> None:
     logger.warning("Failed to preload lesson: %s", lesson_id)
 
 
+def encode_text(text: str) -> str:
+    compressed = lzma.compress(text.encode("utf-8"))
+    return base64.urlsafe_b64encode(compressed).decode("ascii")
+
+
+def decode_text(encoded: str) -> str:
+    compressed = base64.urlsafe_b64decode(encoded.encode("ascii"))
+    return lzma.decompress(compressed).decode("utf-8")
+
+
 # ===== UI =====
 
 
@@ -215,9 +227,6 @@ def go_to_main_page() -> None:
 
 def get_current_lesson_id() -> str:
     url = js.URL.new(window.location.href)
-    last_path_segment = url.pathname.split("/")[-1]
-    if last_path_segment.startswith("playground"):
-        return "playground"
     return url.searchParams.get("id") or ""
 
 
@@ -276,16 +285,56 @@ async def on_history_change(event):
         await set_current_lesson(lesson_id, push_to_history=False)
 
 
+# ===== Playground =====
+
+
+def is_playground() -> str:
+    url = js.URL.new(window.location.href)
+    last_path_segment = url.pathname.split("/")[-1]
+    return last_path_segment.startswith("playground")
+
+
+def apply_paste() -> None:
+    url = js.URL.new(window.location.href)
+    if decoded := url.searchParams.get("paste"):
+        input_element = document.querySelector("#rst-input")
+        try:
+            input_element.value = decode_text(decoded)
+        except Exception:
+            input_element.value = "!! Invalid paste data"
+        return None
+    return None
+
+
+def share_paste(event) -> None:
+    input_element = document.querySelector("#rst-input")
+    rst_text = input_element.value
+    if not rst_text.strip():
+        return
+    try:
+        encoded = encode_text(rst_text)
+    except Exception:
+        js.alert("Error encoding data")
+        return
+
+    url = js.URL.new(window.location.href)
+    url.searchParams.set("paste", encoded)
+    window.history.replaceState(None, "", url.href)
+
+    js.alert("Copy URL from the address bar")
+
+
 # ===== Main Setup =====
 
 
 async def main_app_setup():
-    if lesson_id := get_current_lesson_id():
-        if lesson_id == "playground":
-            render_rst_on_input()
-            hide_main_loader()
-            return
+    if is_playground():
+        apply_paste()
+        render_rst_on_input()
+        hide_main_loader()
+        return
 
+    if lesson_id := get_current_lesson_id():
         proxy = ffi.create_proxy(on_history_change)
         window.addEventListener("popstate", proxy)
         await set_current_lesson(lesson_id, push_to_history=False)

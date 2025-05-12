@@ -1,4 +1,4 @@
 name = "reStructuredText Excercises"
 description = "RST tutorial app"
-packages = ["docutils", "pygments"]
+packages = ["docutils", "pygments", "lzma"]
 interpreter = "/pyodide/pyodide.mjs"
