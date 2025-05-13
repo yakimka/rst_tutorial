@@ -62,9 +62,9 @@ markup.
         reStructuredText markup.
 3.  **Experiment with Special Characters**:
 
-    *   Try including text like ````*this_is_not_italic*```` or ````_not_a_link_````
+    *   Try including text like ````*this_is_not_italic*```` or ````not_a_link_````
         within double backticks.
-    *   Observe that it is rendered as ``*this_is_not_italic*`` and ``_not_a_link_``
+    *   Observe that it is rendered as ``*this_is_not_italic*`` and ``not_a_link_``
         respectively, not as emphasized text or a hyperlink.
 
 # Lesson Example
