@@ -28,7 +28,7 @@ Technologies Used
 * **HTML, CSS, JavaScript:** For the frontend structure, styling, and interactivity.
 * **Pico.css:** A minimalist CSS framework for styling.
 * **Split.js:** For creating draggable split views.
-* **ACE Editor**
+* **ACE Editor:** A powerful code editor.
 
 Getting Started
 ---------------
