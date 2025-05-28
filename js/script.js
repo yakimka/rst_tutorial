@@ -1,3 +1,11 @@
+var editor = null;
+const textarea = document.getElementById('rst-input');
+if (textarea) {
+    editor = ace.edit("rst-input", {
+        mode: "ace/mode/rst",
+    });
+}
+
 const switchTheme = document.getElementById('theme_switcher')
 if (switchTheme) {
     // https://github.com/RWDevelopment/theme_switch
@@ -26,24 +34,47 @@ if (switchTheme) {
         let currentThemeIndex = themes.indexOf(current)
         return themes[(currentThemeIndex + 1) % themes.length]
     }
+    const setAceTheme = (theme) => {
+        if (!editor) {
+            console.error('ACE editor not initialized.');
+            return;
+        }
+        if (theme === 'light') {
+            editor.setTheme("ace/theme/github");
+        } else if (theme === 'dark') {
+            editor.setTheme("ace/theme/github_dark");
+        }
+    }
     const setTheme = (theme) => {
         if (theme === 'auto') {
             html.removeAttribute('data-theme')
         } else {
             html.setAttribute('data-theme', theme)
+            setAceTheme(theme)
         }
         switchTheme.innerHTML = icons[themes.indexOf(theme)]
         switchTheme.setAttribute('title', theme)
         localStorage.setItem('theme', theme)
     }
-}
 
-const textarea = document.getElementById('rst-input');
-if (textarea) {
-    if (textarea && typeof enableTabToIndent === 'function') {
-        enableTabToIndent(textarea);
-    } else {
-        if (!textarea) console.error('Textarea not found for tab indentation setup.');
-        if (typeof enableTabToIndent !== 'function') console.error('enableTabToIndent function not found.');
+    // Swith ACE editor theme based on the current theme
+    const toggleDarkMode = (state) => {
+        if (getCurrentTheme() !== 'auto') {
+            return;
+        }
+        if (state) {
+            setAceTheme('dark');
+        } else {
+            setAceTheme('light');
+        }
+    }
+
+    if (editor && window.matchMedia) {
+        const match = window.matchMedia('(prefers-color-scheme: dark)')
+        toggleDarkMode(match.matches);
+
+        match.addEventListener('change', e => {
+            toggleDarkMode(match.matches);
+        })
     }
 }
