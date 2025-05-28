@@ -28,7 +28,7 @@ Technologies Used
 * **HTML, CSS, JavaScript:** For the frontend structure, styling, and interactivity.
 * **Pico.css:** A minimalist CSS framework for styling.
 * **Split.js:** For creating draggable split views.
-* **indent-textarea.js:** For enabling tab indentation in textareas.
+* **ACE Editor**
 
 Getting Started
 ---------------
