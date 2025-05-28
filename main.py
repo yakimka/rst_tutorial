@@ -192,13 +192,12 @@ async def set_current_lesson(lesson_id: str, push_to_history: bool) -> None:
 
 def display_lesson(lesson: Lesson) -> None:
     lesson_div = document.getElementById("lesson-content-area")
-    rst_input_element = document.getElementById("rst-input")
     page_main_title_element = document.getElementById("page-main-title")
     next_button_element = document.getElementById("next-lesson-button")
 
     page_main_title_element.textContent = lesson.main_chapter
     lesson_div.innerHTML = render_rst(lesson.description)
-    rst_input_element.value = lesson.interactive
+    insert_text_to_editor(lesson.interactive)
     render_rst_from_input()  # Use the direct implementation to avoid delay
     if lesson.next_lesson_id:
         next_button_element.setAttribute("data-next-lesson-id", lesson.next_lesson_id)
@@ -207,14 +206,13 @@ def display_lesson(lesson: Lesson) -> None:
         next_button_element.style.display = "none"
 
     lesson_div.scrollTop = 0
-    rst_input_element.scrollTop = 0
+    js.editor.renderer.scrollToLine(0, True, True)
     output_element = document.getElementById("rst-output")
     output_element.scrollTop = 0
 
 
 def display_error(is404: bool = False) -> None:
     lesson_div = document.getElementById("lesson-content-area")
-    rst_input_element = document.getElementById("rst-input")
     next_button_element = document.getElementById("next-lesson-button")
     output_div = document.getElementById("rst-output")
 
@@ -223,7 +221,7 @@ def display_error(is404: bool = False) -> None:
         message = "Lesson not found. Please check the URL."
     lesson_div.innerHTML = message
 
-    rst_input_element.value = ""
+    insert_text_to_editor("")
     output_div.innerHTML = ""
     next_button_element.style.display = "none"
 
@@ -301,9 +299,8 @@ def debounce(func: Callable, delay: int = 300) -> Callable:
     return debounced
 
 
-def render_rst_from_input(event=None):
-    input_element = document.getElementById("rst-input")
-    rst_text = input_element.value
+def render_rst_from_input(*args, **kwargs) -> None:
+    rst_text = get_text_from_editor()
     output_div = document.getElementById("rst-output")
     output_div.innerHTML = render_rst(rst_text)
 
@@ -335,18 +332,16 @@ def is_playground() -> str:
 def apply_paste() -> None:
     url = js.URL.new(window.location.href)
     if decoded := url.searchParams.get("paste"):
-        input_element = document.getElementById("rst-input")
         try:
-            input_element.value = decode_text(decoded)
+            insert_text_to_editor(decode_text(decoded))
         except Exception:
-            input_element.value = "!! Invalid paste data"
+            insert_text_to_editor("!! Invalid paste data")
         return None
     return None
 
 
 def share_paste(event) -> None:
-    input_element = document.getElementById("rst-input")
-    rst_text = input_element.value
+    rst_text = get_text_from_editor()
     if not rst_text.strip():
         return
     try:
@@ -362,13 +357,24 @@ def share_paste(event) -> None:
     js.alert("Copy URL from the address bar")
 
 
+def get_text_from_editor() -> str:
+    return js.editor.getValue() or ""
+
+
+def insert_text_to_editor(text: str) -> None:
+    js.editor.setValue(text, -1)
+
+
 # ===== Main Setup =====
 
 
 async def main_app_setup():
+    proxy = ffi.create_proxy(_render_rst_from_input_debounced)
+    js.editor.getSession().on("change", proxy)
+
     if is_playground():
         apply_paste()
-        render_rst_from_input()  # Use the direct implementation to avoid delay
+        render_rst_from_input()
         hide_main_loader()
         return
 

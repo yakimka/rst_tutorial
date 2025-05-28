@@ -47,7 +47,7 @@
     </style>
     <script type="module" src="/pyscript/core.js"></script>
     <script src="/js/split.min.js"></script>
-    <script src="/js/indent-textarea.4.0.0.js"></script>
+    <script src="/js/ace-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 <div id="page-loader">
@@ -60,7 +60,7 @@
 </header>
 <div class="container playground-main-container">
     <div class="panel" id="rst-input-container">
-        <textarea id="rst-input" py-input="_render_rst_from_input_debounced" placeholder="Type reStructuredText here..."></textarea>
+        <div id="rst-input"></div>
         <div class="left-button-footer">
             <a href="/" id="toc-button" role="button">&laquo; Main Page</a>
         </div>
