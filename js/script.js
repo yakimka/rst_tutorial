@@ -1,9 +1,10 @@
-var editor = null;
-const textarea = document.getElementById('rst-input');
+var editor = null
+const textarea = document.getElementById('rst-input')
 if (textarea) {
     editor = ace.edit("rst-input", {
         mode: "ace/mode/rst",
-    });
+    })
+    editor.setKeyboardHandler('ace/keyboard/rst_tutorial')
 }
 
 const switchTheme = document.getElementById('theme_switcher')
@@ -36,13 +37,13 @@ if (switchTheme) {
     }
     const setAceTheme = (theme) => {
         if (!editor) {
-            console.error('ACE editor not initialized.');
-            return;
+            console.error('ACE editor not initialized.')
+            return
         }
         if (theme === 'light') {
-            editor.setTheme("ace/theme/github");
+            editor.setTheme("ace/theme/github")
         } else if (theme === 'dark') {
-            editor.setTheme("ace/theme/github_dark");
+            editor.setTheme("ace/theme/github_dark")
         }
     }
     const setTheme = (theme) => {
@@ -60,21 +61,21 @@ if (switchTheme) {
     // Swith ACE editor theme based on the current theme
     const toggleDarkMode = (state) => {
         if (getCurrentTheme() !== 'auto') {
-            return;
+            return
         }
         if (state) {
-            setAceTheme('dark');
+            setAceTheme('dark')
         } else {
-            setAceTheme('light');
+            setAceTheme('light')
         }
     }
 
     if (editor && window.matchMedia) {
         const match = window.matchMedia('(prefers-color-scheme: dark)')
-        toggleDarkMode(match.matches);
+        toggleDarkMode(match.matches)
 
         match.addEventListener('change', e => {
-            toggleDarkMode(match.matches);
+            toggleDarkMode(match.matches)
         })
     }
 }
